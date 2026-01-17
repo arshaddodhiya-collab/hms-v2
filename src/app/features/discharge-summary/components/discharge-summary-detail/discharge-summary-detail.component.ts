@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DischargeSummaryService } from '../../services/discharge-summary.service';
 import { DischargeSummary } from '../../models/discharge-summary.model';
@@ -15,11 +15,9 @@ export class DischargeSummaryDetailComponent implements OnInit {
   isGeneratingPdf = false;
   today = new Date();
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    private dischargeSummaryService: DischargeSummaryService,
-  ) {}
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dischargeSummaryService = inject(DischargeSummaryService);
 
   ngOnInit(): void {
     const id = this.route.snapshot.paramMap.get('id');
@@ -57,6 +55,7 @@ export class DischargeSummaryDetailComponent implements OnInit {
       scale: 3,
       useCORS: true,
       backgroundColor: '#ffffff',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } as any)
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');

@@ -1,192 +1,192 @@
-<div
-  *ngIf="summary; else noData"
-  class="flex justify-content-center p-4 fadein animation-duration-500"
->
-  <p-card
-    id="contentToExport"
-    [style]="{ width: '900px', 'max-width': '100%' }"
-    styleClass="shadow-6 border-round-xl overflow-hidden"
-  >
-    <ng-template pTemplate="title">
-      <div
-        class="flex align-items-center justify-content-between surface-50 p-3 -m-4 mb-2 border-bottom-1 surface-border"
-      >
-        <div class="flex align-items-center gap-3">
-          <div
-            class="flex align-items-center justify-content-center bg-primary text-white border-circle w-4rem h-4rem custom-shadow"
-          >
-            <i class="pi pi-file-o text-2xl"></i>
-          </div>
-          <div class="flex flex-column">
-            <span class="text-2xl font-bold text-900">Discharge Summary</span>
-            <span class="text-sm text-500">ID: {{ summary.id }}</span>
-          </div>
-        </div>
-        <p-tag
-          [value]="summary.status"
-          [severity]="summary.status === 'Discharged' ? 'success' : 'info'"
-          styleClass="text-base px-3 py-2"
-        ></p-tag>
-      </div>
-    </ng-template>
-
-    <ng-template pTemplate="content">
-      <div class="grid mt-4">
-        <!-- Patient Info Section -->
-        <div class="col-12 md:col-6">
-          <div class="surface-card p-4 shadow-1 border-round h-full">
+@if (summary) {
+  <div class="flex justify-content-center p-4 fadein animation-duration-500">
+    <p-card
+      id="contentToExport"
+      [style]="{ width: '900px', 'max-width': '100%' }"
+      styleClass="shadow-6 border-round-xl overflow-hidden"
+    >
+      <ng-template pTemplate="title">
+        <div
+          class="flex align-items-center justify-content-between surface-50 p-3 -m-4 mb-2 border-bottom-1 surface-border"
+        >
+          <div class="flex align-items-center gap-3">
             <div
-              class="text-xl font-bold mb-3 text-primary border-bottom-1 surface-border pb-2"
+              class="flex align-items-center justify-content-center bg-primary text-white border-circle w-4rem h-4rem custom-shadow"
             >
-              <i class="pi pi-user mr-2"></i>Patient Information
+              <i class="pi pi-file-o text-2xl"></i>
             </div>
-            <div class="grid">
-              <div class="col-12 mb-2">
-                <span class="text-500 block mb-1">Name</span>
-                <span class="text-900 text-lg font-medium">{{
-                  summary.patientName
-                }}</span>
-              </div>
-              <div class="col-6 mb-2">
-                <span class="text-500 block mb-1">Patient ID</span>
-                <span class="text-900 font-medium">{{
-                  summary.patientId
-                }}</span>
-              </div>
-              <div class="col-6 mb-2">
-                <span class="text-500 block mb-1">Doctor</span>
-                <span class="text-900 font-medium">{{
-                  summary.doctorName
-                }}</span>
-              </div>
+            <div class="flex flex-column">
+              <span class="text-2xl font-bold text-900">Discharge Summary</span>
+              <span class="text-sm text-500">ID: {{ summary.id }}</span>
             </div>
           </div>
+          <p-tag
+            [value]="summary.status"
+            [severity]="summary.status === 'Discharged' ? 'success' : 'info'"
+            styleClass="text-base px-3 py-2"
+          ></p-tag>
         </div>
+      </ng-template>
 
-        <!-- Dates Section -->
-        <div class="col-12 md:col-6">
-          <div class="surface-card p-4 shadow-1 border-round h-full">
-            <div
-              class="text-xl font-bold mb-3 text-primary border-bottom-1 surface-border pb-2"
-            >
-              <i class="pi pi-calendar mr-2"></i>Timeline
-            </div>
-            <div class="flex flex-column gap-3">
+      <ng-template pTemplate="content">
+        <div class="grid mt-4">
+          <!-- Patient Info Section -->
+          <div class="col-12 md:col-6">
+            <div class="surface-card p-4 shadow-1 border-round h-full">
               <div
-                class="flex align-items-center justify-content-between p-2 surface-50 border-round"
+                class="text-xl font-bold mb-3 text-primary border-bottom-1 surface-border pb-2"
               >
-                <span class="text-500">Admission Date</span>
-                <span class="text-900 font-medium">{{
-                  summary.admissionDate | date: "mediumDate"
-                }}</span>
+                <i class="pi pi-user mr-2"></i>Patient Information
               </div>
-              <div
-                class="flex align-items-center justify-content-between p-2 surface-50 border-round"
-              >
-                <span class="text-500">Discharge Date</span>
-                <span class="text-900 font-medium">{{
-                  summary.dischargeDate | date: "mediumDate"
-                }}</span>
+              <div class="grid">
+                <div class="col-12 mb-2">
+                  <span class="text-500 block mb-1">Name</span>
+                  <span class="text-900 text-lg font-medium">{{
+                    summary.patientName
+                  }}</span>
+                </div>
+                <div class="col-6 mb-2">
+                  <span class="text-500 block mb-1">Patient ID</span>
+                  <span class="text-900 font-medium">{{
+                    summary.patientId
+                  }}</span>
+                </div>
+                <div class="col-6 mb-2">
+                  <span class="text-500 block mb-1">Doctor</span>
+                  <span class="text-900 font-medium">{{
+                    summary.doctorName
+                  }}</span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <!-- Clinical Details -->
-        <div class="col-12 mt-3">
-          <div class="surface-card p-4 shadow-1 border-round">
-            <div
-              class="text-xl font-bold mb-3 text-primary border-bottom-1 surface-border pb-2"
-            >
-              <i class="pi pi-heart-fill mr-2"></i>Clinical Details
-            </div>
-
-            <div class="mb-4">
-              <h3 class="text-lg font-bold text-900 mb-2">Diagnosis</h3>
-              <p class="line-height-3 text-700 m-0 p-3 surface-50 border-round">
-                {{ summary.diagnosis }}
-              </p>
-            </div>
-
-            <div class="mb-4">
-              <h3 class="text-lg font-bold text-900 mb-2">Treatment Given</h3>
-              <p class="line-height-3 text-700 m-0 p-3 surface-50 border-round">
-                {{ summary.treatmentGiven }}
-              </p>
-            </div>
-
-            <div class="mb-4">
-              <h3 class="text-lg font-bold text-900 mb-2">
-                Prescribed Medicines
-              </h3>
-              <ul class="list-none p-0 m-0 grid">
-                <li
-                  *ngFor="let med of summary.prescribedMedicines"
-                  class="col-12 md:col-6"
+          <!-- Dates Section -->
+          <div class="col-12 md:col-6">
+            <div class="surface-card p-4 shadow-1 border-round h-full">
+              <div
+                class="text-xl font-bold mb-3 text-primary border-bottom-1 surface-border pb-2"
+              >
+                <i class="pi pi-calendar mr-2"></i>Timeline
+              </div>
+              <div class="flex flex-column gap-3">
+                <div
+                  class="flex align-items-center justify-content-between p-2 surface-50 border-round"
                 >
-                  <div
-                    class="flex align-items-center p-3 surface-50 border-round"
-                  >
-                    <i class="pi pi-check-circle text-green-500 mr-3"></i>
-                    <span class="text-700">{{ med }}</span>
-                  </div>
-                </li>
-              </ul>
+                  <span class="text-500">Admission Date</span>
+                  <span class="text-900 font-medium">{{
+                    summary.admissionDate | date: "mediumDate"
+                  }}</span>
+                </div>
+                <div
+                  class="flex align-items-center justify-content-between p-2 surface-50 border-round"
+                >
+                  <span class="text-500">Discharge Date</span>
+                  <span class="text-900 font-medium">{{
+                    summary.dischargeDate | date: "mediumDate"
+                  }}</span>
+                </div>
+              </div>
             </div>
+          </div>
 
-            <div>
-              <h3 class="text-lg font-bold text-900 mb-2">
-                Follow-up Instructions
-              </h3>
+          <!-- Clinical Details -->
+          <div class="col-12 mt-3">
+            <div class="surface-card p-4 shadow-1 border-round">
               <div
-                class="p-3 bg-blue-50 text-blue-900 border-round flex align-items-start gap-3"
+                class="text-xl font-bold mb-3 text-primary border-bottom-1 surface-border pb-2"
               >
-                <i class="pi pi-info-circle text-xl mt-1"></i>
-                <p class="m-0 line-height-3">
-                  {{ summary.followUpInstructions }}
+                <i class="pi pi-heart-fill mr-2"></i>Clinical Details
+              </div>
+
+              <div class="mb-4">
+                <h3 class="text-lg font-bold text-900 mb-2">Diagnosis</h3>
+                <p
+                  class="line-height-3 text-700 m-0 p-3 surface-50 border-round"
+                >
+                  {{ summary.diagnosis }}
                 </p>
               </div>
+
+              <div class="mb-4">
+                <h3 class="text-lg font-bold text-900 mb-2">Treatment Given</h3>
+                <div
+                  class="line-height-3 text-700 m-0 p-3 surface-50 border-round"
+                  [innerHTML]="summary.treatmentGiven"
+                ></div>
+              </div>
+
+              <div class="mb-4">
+                <h3 class="text-lg font-bold text-900 mb-2">
+                  Prescribed Medicines
+                </h3>
+                <ul class="list-none p-0 m-0 grid">
+                  @for (med of summary.prescribedMedicines; track med) {
+                    <li class="col-12 md:col-6">
+                      <div
+                        class="flex align-items-center p-3 surface-50 border-round"
+                      >
+                        <i class="pi pi-check-circle text-green-500 mr-3"></i>
+                        <span class="text-700">{{ med }}</span>
+                      </div>
+                    </li>
+                  }
+                </ul>
+              </div>
+
+              <div>
+                <h3 class="text-lg font-bold text-900 mb-2">
+                  Follow-up Instructions
+                </h3>
+                <div
+                  class="p-3 bg-blue-50 text-blue-900 border-round flex align-items-start gap-3"
+                >
+                  <i class="pi pi-info-circle text-xl mt-1"></i>
+                  <div
+                    class="m-0 line-height-3"
+                    [innerHTML]="summary.followUpInstructions"
+                  ></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </ng-template>
+      </ng-template>
 
-    <ng-template pTemplate="footer">
-      <div
-        class="flex gap-2 justify-content-end p-3 -m-4 mt-2 surface-50 border-top-1 surface-border"
-      >
-        <p-button
-          label="Back"
-          icon="pi pi-arrow-left"
-          styleClass="p-button-outlined"
-          (onClick)="goBack()"
-        ></p-button>
-        <p-button
-          label="Edit"
-          icon="pi pi-pencil"
-          styleClass="p-button-outlined p-button-warning"
-          (onClick)="editSummary()"
-        ></p-button>
-        <p-button
-          label="Print Summary"
-          icon="pi pi-print"
-          styleClass="p-button-secondary p-button-outlined"
-          (onClick)="print()"
-        ></p-button>
-        <p-button
-          label="Download PDF"
-          icon="pi pi-download"
-          styleClass="p-button-primary"
-          [loading]="isGeneratingPdf"
-          (onClick)="downloadPDF()"
-        ></p-button>
-      </div>
-    </ng-template>
-  </p-card>
-</div>
-
-<ng-template #noData>
+      <ng-template pTemplate="footer">
+        <div
+          class="flex gap-2 justify-content-end p-3 -m-4 mt-2 surface-50 border-top-1 surface-border"
+        >
+          <p-button
+            label="Back"
+            icon="pi pi-arrow-left"
+            styleClass="p-button-outlined"
+            (onClick)="goBack()"
+          ></p-button>
+          <p-button
+            label="Edit"
+            icon="pi pi-pencil"
+            styleClass="p-button-outlined p-button-warning"
+            (onClick)="editSummary()"
+          ></p-button>
+          <p-button
+            label="Print Summary"
+            icon="pi pi-print"
+            styleClass="p-button-secondary p-button-outlined"
+            (onClick)="print()"
+          ></p-button>
+          <p-button
+            label="Download PDF"
+            icon="pi pi-download"
+            styleClass="p-button-primary"
+            [loading]="isGeneratingPdf"
+            (onClick)="downloadPDF()"
+          ></p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </div>
+} @else {
   <div class="flex justify-content-center align-items-center h-screen">
     <p-card class="text-center">
       <h2>Summary Not Found</h2>
@@ -194,7 +194,7 @@
       <p-button label="Back to List" (onClick)="goBack()"></p-button>
     </p-card>
   </div>
-</ng-template>
+}
 
 <!-- Hidden Report Template for PDF Generation -->
 <div id="pdf-report" class="pdf-report-container">
@@ -212,26 +212,26 @@
   <div class="report-section patient-info">
     <div class="info-row">
       <div class="info-item">
-        <label>Patient Name</label>
+        <span class="font-bold">Patient Name</span>
         <span>{{ summary?.patientName }}</span>
       </div>
       <div class="info-item">
-        <label>Patient ID</label>
+        <span class="font-bold">Patient ID</span>
         <span>{{ summary?.patientId }}</span>
       </div>
     </div>
 
     <div class="info-row">
       <div class="info-item">
-        <label>Doctor</label>
+        <span class="font-bold">Doctor</span>
         <span>{{ summary?.doctorName }}</span>
       </div>
       <div class="info-item">
-        <label>Admission Date</label>
+        <span class="font-bold">Admission Date</span>
         <span>{{ summary?.admissionDate | date: "mediumDate" }}</span>
       </div>
       <div class="info-item">
-        <label>Discharge Date</label>
+        <span class="font-bold">Discharge Date</span>
         <span>{{ summary?.dischargeDate | date: "mediumDate" }}</span>
       </div>
     </div>
@@ -247,21 +247,23 @@
 
     <div class="report-block">
       <h3>Treatment Given</h3>
-      <p>{{ summary?.treatmentGiven }}</p>
+      <div [innerHTML]="summary?.treatmentGiven"></div>
     </div>
 
     <div class="report-block">
       <h3>Prescribed Medicines</h3>
       <ul>
-        <li *ngFor="let med of summary?.prescribedMedicines">
-          {{ med }}
-        </li>
+        @for (med of summary?.prescribedMedicines; track med) {
+          <li>
+            {{ med }}
+          </li>
+        }
       </ul>
     </div>
 
     <div class="report-block">
       <h3>Follow-up Instructions</h3>
-      <p>{{ summary?.followUpInstructions }}</p>
+      <div [innerHTML]="summary?.followUpInstructions"></div>
     </div>
   </div>
 

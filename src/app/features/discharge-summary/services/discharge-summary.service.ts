@@ -48,8 +48,6 @@ export class DischargeSummaryService {
     },
   ];
 
-  constructor() {}
-
   getDischargeSummaries(): Observable<DischargeSummary[]> {
     return of(this.mockData);
   }

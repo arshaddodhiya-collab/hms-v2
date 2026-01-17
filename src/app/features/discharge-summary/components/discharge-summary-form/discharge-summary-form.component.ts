@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DischargeSummaryService } from '../../services/discharge-summary.service';
@@ -19,12 +19,10 @@ export class DischargeSummaryFormComponent implements OnInit {
     { label: 'Discharged', value: 'Discharged' },
   ];
 
-  constructor(
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private dischargeSummaryService: DischargeSummaryService,
-  ) {}
+  private fb = inject(FormBuilder);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+  private dischargeSummaryService = inject(DischargeSummaryService);
 
   ngOnInit(): void {
     this.initForm();

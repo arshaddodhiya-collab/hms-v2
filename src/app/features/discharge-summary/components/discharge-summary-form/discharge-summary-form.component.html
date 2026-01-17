@@ -16,23 +16,47 @@
       <div class="grid">
         <!-- Basic Info -->
         <div class="col-12 md:col-6">
-          <label class="block text-900 font-bold mb-2">Patient Name</label>
-          <input pInputText formControlName="patientName" class="w-full" />
+          <label for="patientName" class="block text-900 font-bold mb-2"
+            >Patient Name</label
+          >
+          <input
+            pInputText
+            id="patientName"
+            formControlName="patientName"
+            class="w-full"
+          />
         </div>
 
         <div class="col-12 md:col-6">
-          <label class="block text-900 font-bold mb-2">Patient ID</label>
-          <input pInputText formControlName="patientId" class="w-full" />
+          <label for="patientId" class="block text-900 font-bold mb-2"
+            >Patient ID</label
+          >
+          <input
+            pInputText
+            id="patientId"
+            formControlName="patientId"
+            class="w-full"
+          />
         </div>
 
         <div class="col-12 md:col-6">
-          <label class="block text-900 font-bold mb-2">Attending Doctor</label>
-          <input pInputText formControlName="doctorName" class="w-full" />
+          <label for="doctorName" class="block text-900 font-bold mb-2"
+            >Attending Doctor</label
+          >
+          <input
+            pInputText
+            id="doctorName"
+            formControlName="doctorName"
+            class="w-full"
+          />
         </div>
 
         <div class="col-12 md:col-6">
-          <label class="block text-900 font-bold mb-2">Status</label>
+          <label for="status" class="block text-900 font-bold mb-2"
+            >Status</label
+          >
           <p-dropdown
+            inputId="status"
             [options]="statusOptions"
             formControlName="status"
             optionLabel="label"
@@ -43,8 +67,11 @@
 
         <!-- Dates -->
         <div class="col-12 md:col-6">
-          <label class="block text-900 font-bold mb-2">Admission Date</label>
+          <label for="admissionDate" class="block text-900 font-bold mb-2"
+            >Admission Date</label
+          >
           <p-calendar
+            inputId="admissionDate"
             formControlName="admissionDate"
             [showIcon]="true"
             styleClass="w-full"
@@ -52,8 +79,11 @@
         </div>
 
         <div class="col-12 md:col-6">
-          <label class="block text-900 font-bold mb-2">Discharge Date</label>
+          <label for="dischargeDate" class="block text-900 font-bold mb-2"
+            >Discharge Date</label
+          >
           <p-calendar
+            inputId="dischargeDate"
             formControlName="dischargeDate"
             [showIcon]="true"
             styleClass="w-full"
@@ -64,9 +94,12 @@
 
         <!-- Diagnosis -->
         <div class="col-12">
-          <label class="block text-900 font-bold mb-2">Diagnosis</label>
+          <label for="diagnosis" class="block text-900 font-bold mb-2"
+            >Diagnosis</label
+          >
           <textarea
             pInputTextarea
+            id="diagnosis"
             formControlName="diagnosis"
             rows="3"
             class="w-full"
@@ -75,29 +108,39 @@
 
         <!-- Treatment -->
         <div class="col-12">
-          <label class="block text-900 font-bold mb-2">Treatment Given</label>
+          <span class="block text-900 font-bold mb-2">Treatment Given</span>
           <div class="editor-wrapper">
-            <p-editor formControlName="treatmentGiven"></p-editor>
+            <p-editor
+              formControlName="treatmentGiven"
+              styleClass="w-full"
+            ></p-editor>
           </div>
         </div>
 
         <!-- Follow-up -->
         <div class="col-12">
-          <label class="block text-900 font-bold mb-2">
+          <span class="block text-900 font-bold mb-2">
             Follow-up Instructions
-          </label>
+          </span>
           <div class="editor-wrapper">
-            <p-editor formControlName="followUpInstructions"></p-editor>
+            <p-editor
+              formControlName="followUpInstructions"
+              styleClass="w-full"
+            ></p-editor>
           </div>
         </div>
 
         <!-- Medicines -->
         <div class="col-12">
-          <label class="block text-900 font-bold mb-2">
+          <label
+            for="prescribedMedicines"
+            class="block text-900 font-bold mb-2"
+          >
             Prescribed Medicines (Comma separated)
           </label>
           <textarea
             pInputTextarea
+            id="prescribedMedicines"
             formControlName="prescribedMedicines"
             rows="3"
             class="w-full"

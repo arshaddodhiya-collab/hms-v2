@@ -1,6 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { DischargeSummaryFormComponent } from './discharge-summary-form.component';
 import { DischargeSummaryService } from '../../services/discharge-summary.service';
+import { DischargeSummary } from '../../models/discharge-summary.model';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { CardModule } from 'primeng/card';
@@ -28,8 +29,12 @@ describe('DischargeSummaryFormComponent', () => {
     ]);
 
     // Default mocks
-    mockService.createDischargeSummary.and.returnValue(of({} as any));
-    mockService.updateDischargeSummary.and.returnValue(of({} as any));
+    mockService.createDischargeSummary.and.returnValue(
+      of({} as DischargeSummary),
+    );
+    mockService.updateDischargeSummary.and.returnValue(
+      of({} as DischargeSummary),
+    );
     mockService.getDischargeSummaryById.and.returnValue(of(undefined));
 
     mockRouter = jasmine.createSpyObj('Router', ['navigate']);

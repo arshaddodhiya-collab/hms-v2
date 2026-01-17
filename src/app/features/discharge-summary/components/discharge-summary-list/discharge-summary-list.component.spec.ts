@@ -5,7 +5,6 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ButtonModule } from 'primeng/button';
 import { of } from 'rxjs';
-import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
 import { MultiSelectModule } from 'primeng/multiselect';
