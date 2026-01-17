@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class DischargeSummaryListComponent implements OnInit {
   summaries: DischargeSummary[] = [];
+  doctors: any[] = [];
 
   constructor(
     private dischargeSummaryService: DischargeSummaryService,
@@ -19,6 +20,9 @@ export class DischargeSummaryListComponent implements OnInit {
   ngOnInit(): void {
     this.dischargeSummaryService.getDischargeSummaries().subscribe((data) => {
       this.summaries = data;
+      // Extract unique doctor names for filter
+      const doctorNames = [...new Set(data.map((item) => item.doctorName))];
+      this.doctors = doctorNames.map((name) => ({ label: name, value: name }));
     });
   }
 

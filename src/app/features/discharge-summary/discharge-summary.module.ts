@@ -16,6 +16,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { EditorModule } from 'primeng/editor';
 import { CalendarModule } from 'primeng/calendar';
 import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { DischargeSummaryFormComponent } from './components/discharge-summary-form/discharge-summary-form.component';
@@ -41,6 +42,7 @@ import { DischargeSummaryFormComponent } from './components/discharge-summary-fo
     EditorModule,
     CalendarModule,
     DropdownModule,
+    MultiSelectModule,
     InputTextareaModule,
   ],
 })

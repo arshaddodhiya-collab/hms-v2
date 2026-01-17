@@ -49,10 +49,50 @@
           Patient ID <p-sortIcon field="patientId"></p-sortIcon>
         </th>
         <th pSortableColumn="doctorName" style="width: 20%">
-          Doctor Name <p-sortIcon field="doctorName"></p-sortIcon>
+          <div class="flex align-items-center">
+            Doctor Name
+            <p-sortIcon field="doctorName"></p-sortIcon>
+            <p-columnFilter
+              field="doctorName"
+              matchMode="in"
+              display="menu"
+              [showMatchModes]="false"
+              [showOperator]="false"
+              [showAddButton]="false"
+            >
+              <ng-template
+                pTemplate="filter"
+                let-value
+                let-filter="filterCallback"
+              >
+                <p-multiSelect
+                  [ngModel]="value"
+                  [options]="doctors"
+                  placeholder="Any"
+                  (onChange)="filter($event.value)"
+                  optionLabel="label"
+                  optionValue="value"
+                >
+                  <ng-template let-option pTemplate="item">
+                    <div class="inline-block vertical-align-middle">
+                      <span class="ml-1 mt-1">{{ option.label }}</span>
+                    </div>
+                  </ng-template>
+                </p-multiSelect>
+              </ng-template>
+            </p-columnFilter>
+          </div>
         </th>
         <th pSortableColumn="admissionDate" style="width: 15%">
-          Admission <p-sortIcon field="admissionDate"></p-sortIcon>
+          <div class="flex align-items-center">
+            Admission
+            <p-sortIcon field="admissionDate"></p-sortIcon>
+            <p-columnFilter
+              type="date"
+              field="admissionDate"
+              display="menu"
+            ></p-columnFilter>
+          </div>
         </th>
         <th pSortableColumn="dischargeDate" style="width: 15%">
           Discharge <p-sortIcon field="dischargeDate"></p-sortIcon>
