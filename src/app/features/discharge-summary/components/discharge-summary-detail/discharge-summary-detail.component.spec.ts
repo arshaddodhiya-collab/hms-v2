@@ -8,6 +8,8 @@ import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
 import { of } from 'rxjs';
 
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
 describe('DischargeSummaryDetailComponent', () => {
   let component: DischargeSummaryDetailComponent;
   let fixture: ComponentFixture<DischargeSummaryDetailComponent>;
@@ -38,7 +40,13 @@ describe('DischargeSummaryDetailComponent', () => {
 
     await TestBed.configureTestingModule({
       declarations: [DischargeSummaryDetailComponent],
-      imports: [CardModule, ButtonModule, DividerModule, TagModule],
+      imports: [
+        CardModule,
+        ButtonModule,
+        DividerModule,
+        TagModule,
+        NoopAnimationsModule,
+      ],
       providers: [
         { provide: DischargeSummaryService, useValue: mockService },
         { provide: Router, useValue: mockRouter },

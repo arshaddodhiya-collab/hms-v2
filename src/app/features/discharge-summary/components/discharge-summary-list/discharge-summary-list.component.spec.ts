@@ -8,11 +8,19 @@ import { of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 
+import { MultiSelectModule } from 'primeng/multiselect';
+import { CalendarModule } from 'primeng/calendar';
+import { InputTextModule } from 'primeng/inputtext';
+import { FormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { RouterTestingModule } from '@angular/router/testing';
+
 describe('DischargeSummaryListComponent', () => {
   let component: DischargeSummaryListComponent;
   let fixture: ComponentFixture<DischargeSummaryListComponent>;
   let mockService: jasmine.SpyObj<DischargeSummaryService>;
-  let mockRouter: jasmine.SpyObj<Router>;
+  let router: Router;
 
   beforeEach(async () => {
     mockService = jasmine.createSpyObj('DischargeSummaryService', [
@@ -36,19 +44,26 @@ describe('DischargeSummaryListComponent', () => {
       ]),
     );
 
-    mockRouter = jasmine.createSpyObj('Router', ['navigate']);
-
     await TestBed.configureTestingModule({
       declarations: [DischargeSummaryListComponent],
-      imports: [TableModule, TagModule, ButtonModule],
-      providers: [
-        { provide: DischargeSummaryService, useValue: mockService },
-        { provide: Router, useValue: mockRouter },
+      imports: [
+        TableModule,
+        TagModule,
+        ButtonModule,
+        MultiSelectModule,
+        CalendarModule,
+        InputTextModule,
+        FormsModule,
+        NoopAnimationsModule,
+        RouterTestingModule,
       ],
+      providers: [{ provide: DischargeSummaryService, useValue: mockService }],
     }).compileComponents();
 
     fixture = TestBed.createComponent(DischargeSummaryListComponent);
     component = fixture.componentInstance;
+    router = TestBed.inject(Router);
+    spyOn(router, 'navigate');
     fixture.detectChanges();
   });
 
@@ -63,9 +78,6 @@ describe('DischargeSummaryListComponent', () => {
 
   it('should navigate to details on view summary', () => {
     component.viewSummary('1');
-    expect(mockRouter.navigate).toHaveBeenCalledWith([
-      '/discharge-summary',
-      '1',
-    ]);
+    expect(router.navigate).toHaveBeenCalledWith(['/discharge-summary', '1']);
   });
 });
