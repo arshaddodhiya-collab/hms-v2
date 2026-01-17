@@ -1,0 +1,36 @@
+:host {
+  display: block;
+}
+
+/* Prevent form reflow */
+.stable-form {
+  contain: layout;
+}
+
+/* Fix editor jumping */
+.editor-wrapper {
+  height: 200px;
+  border: 1px solid var(--surface-border);
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+:host ::ng-deep .p-editor {
+  height: 100%;
+}
+
+:host ::ng-deep .p-editor-content {
+  height: calc(100% - 42px); /* toolbar height */
+  overflow-y: auto;
+}
+
+/* Footer stability */
+.footer-fixed {
+  min-height: 56px;
+  align-items: center;
+}
+
+/* Calendar dropdown stability */
+:host ::ng-deep .p-datepicker {
+  z-index: 1000;
+}

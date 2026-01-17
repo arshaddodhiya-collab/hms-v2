@@ -1,0 +1,127 @@
+<div class="card p-4 fadein animation-duration-500">
+  <div class="flex align-items-center justify-content-between mb-4">
+    <h2 class="m-0 text-primary font-bold text-3xl">
+      {{ isEditMode ? "Edit Discharge Summary" : "New Discharge Summary" }}
+    </h2>
+    <p-button
+      label="Cancel"
+      icon="pi pi-times"
+      styleClass="p-button-outlined p-button-secondary"
+      (onClick)="cancel()"
+    ></p-button>
+  </div>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="stable-form">
+    <p-card styleClass="shadow-4 border-round-xl">
+      <div class="grid">
+        <!-- Basic Info -->
+        <div class="col-12 md:col-6">
+          <label class="block text-900 font-bold mb-2">Patient Name</label>
+          <input pInputText formControlName="patientName" class="w-full" />
+        </div>
+
+        <div class="col-12 md:col-6">
+          <label class="block text-900 font-bold mb-2">Patient ID</label>
+          <input pInputText formControlName="patientId" class="w-full" />
+        </div>
+
+        <div class="col-12 md:col-6">
+          <label class="block text-900 font-bold mb-2">Attending Doctor</label>
+          <input pInputText formControlName="doctorName" class="w-full" />
+        </div>
+
+        <div class="col-12 md:col-6">
+          <label class="block text-900 font-bold mb-2">Status</label>
+          <p-dropdown
+            [options]="statusOptions"
+            formControlName="status"
+            optionLabel="label"
+            optionValue="value"
+            styleClass="w-full"
+          ></p-dropdown>
+        </div>
+
+        <!-- Dates -->
+        <div class="col-12 md:col-6">
+          <label class="block text-900 font-bold mb-2">Admission Date</label>
+          <p-calendar
+            formControlName="admissionDate"
+            [showIcon]="true"
+            styleClass="w-full"
+          ></p-calendar>
+        </div>
+
+        <div class="col-12 md:col-6">
+          <label class="block text-900 font-bold mb-2">Discharge Date</label>
+          <p-calendar
+            formControlName="dischargeDate"
+            [showIcon]="true"
+            styleClass="w-full"
+          ></p-calendar>
+        </div>
+
+        <p-divider class="col-12"></p-divider>
+
+        <!-- Diagnosis -->
+        <div class="col-12">
+          <label class="block text-900 font-bold mb-2">Diagnosis</label>
+          <textarea
+            pInputTextarea
+            formControlName="diagnosis"
+            rows="3"
+            class="w-full"
+          ></textarea>
+        </div>
+
+        <!-- Treatment -->
+        <div class="col-12">
+          <label class="block text-900 font-bold mb-2">Treatment Given</label>
+          <div class="editor-wrapper">
+            <p-editor formControlName="treatmentGiven"></p-editor>
+          </div>
+        </div>
+
+        <!-- Follow-up -->
+        <div class="col-12">
+          <label class="block text-900 font-bold mb-2">
+            Follow-up Instructions
+          </label>
+          <div class="editor-wrapper">
+            <p-editor formControlName="followUpInstructions"></p-editor>
+          </div>
+        </div>
+
+        <!-- Medicines -->
+        <div class="col-12">
+          <label class="block text-900 font-bold mb-2">
+            Prescribed Medicines (Comma separated)
+          </label>
+          <textarea
+            pInputTextarea
+            formControlName="prescribedMedicines"
+            rows="3"
+            class="w-full"
+            placeholder="e.g. Paracetamol 500mg, Amoxicillin 250mg"
+          ></textarea>
+        </div>
+      </div>
+
+      <ng-template pTemplate="footer">
+        <div class="flex justify-content-end gap-2 footer-fixed">
+          <p-button
+            label="Cancel"
+            icon="pi pi-times"
+            styleClass="p-button-text"
+            (onClick)="cancel()"
+          ></p-button>
+          <p-button
+            label="Save Summary"
+            icon="pi pi-check"
+            type="submit"
+            [disabled]="form.invalid"
+          ></p-button>
+        </div>
+      </ng-template>
+    </p-card>
+  </form>
+</div>

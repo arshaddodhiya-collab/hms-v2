@@ -36,6 +36,12 @@ export class DischargeSummaryDetailComponent implements OnInit {
     this.router.navigate(['/discharge-summary']);
   }
 
+  editSummary(): void {
+    if (this.summary) {
+      this.router.navigate(['/discharge-summary', this.summary.id, 'edit']);
+    }
+  }
+
   print(): void {
     window.print();
   }
@@ -46,11 +52,12 @@ export class DischargeSummaryDetailComponent implements OnInit {
 
     this.isGeneratingPdf = true;
 
+    // 'scale' works but TS might complain depending on version, casting options to any simplifies compatibility
     html2canvas(element, {
       scale: 3,
       useCORS: true,
       backgroundColor: '#ffffff',
-    })
+    } as any)
       .then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
 
@@ -77,11 +84,10 @@ export class DischargeSummaryDetailComponent implements OnInit {
         pdf.save(
           `Discharge_Summary_${this.summary?.patientId || 'Report'}.pdf`,
         );
+        this.isGeneratingPdf = false;
       })
       .catch((err) => {
         console.error('PDF Generation Error:', err);
-      })
-      .finally(() => {
         this.isGeneratingPdf = false;
       });
   }

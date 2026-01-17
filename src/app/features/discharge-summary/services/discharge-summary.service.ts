@@ -60,4 +60,23 @@ export class DischargeSummaryService {
     const summary = this.mockData.find((d) => d.id === id);
     return of(summary);
   }
+
+  updateDischargeSummary(
+    updatedSummary: DischargeSummary,
+  ): Observable<DischargeSummary> {
+    const index = this.mockData.findIndex((s) => s.id === updatedSummary.id);
+    if (index !== -1) {
+      this.mockData[index] = updatedSummary;
+    }
+    return of(updatedSummary);
+  }
+
+  createDischargeSummary(
+    newSummary: DischargeSummary,
+  ): Observable<DischargeSummary> {
+    // Generate a simple ID for mock purposes
+    newSummary.id = 'DS' + (this.mockData.length + 1001);
+    this.mockData.push(newSummary);
+    return of(newSummary);
+  }
 }

@@ -13,15 +13,24 @@ import { DividerModule } from 'primeng/divider';
 import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
 import { TooltipModule } from 'primeng/tooltip';
+import { EditorModule } from 'primeng/editor';
+import { CalendarModule } from 'primeng/calendar';
+import { DropdownModule } from 'primeng/dropdown';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { DischargeSummaryFormComponent } from './components/discharge-summary-form/discharge-summary-form.component';
 
 @NgModule({
   declarations: [
     DischargeSummaryListComponent,
     DischargeSummaryDetailComponent,
+    DischargeSummaryFormComponent,
   ],
   imports: [
     CommonModule,
     DischargeSummaryRoutingModule,
+    ReactiveFormsModule,
+    FormsModule,
     TableModule,
     CardModule,
     ButtonModule,
@@ -29,6 +38,10 @@ import { TooltipModule } from 'primeng/tooltip';
     TagModule,
     InputTextModule,
     TooltipModule,
+    EditorModule,
+    CalendarModule,
+    DropdownModule,
+    InputTextareaModule,
   ],
 })
 export class DischargeSummaryModule {}
