@@ -3,6 +3,7 @@
   class="flex justify-content-center p-4 fadein animation-duration-500"
 >
   <p-card
+    id="contentToExport"
     [style]="{ width: '900px', 'max-width': '100%' }"
     styleClass="shadow-6 border-round-xl overflow-hidden"
   >
@@ -164,8 +165,15 @@
         <p-button
           label="Print Summary"
           icon="pi pi-print"
-          styleClass="p-button-primary"
+          styleClass="p-button-secondary p-button-outlined"
           (onClick)="print()"
+        ></p-button>
+        <p-button
+          label="Download PDF"
+          icon="pi pi-download"
+          styleClass="p-button-primary"
+          [loading]="isGeneratingPdf"
+          (onClick)="downloadPDF()"
         ></p-button>
       </div>
     </ng-template>
@@ -181,3 +189,78 @@
     </p-card>
   </div>
 </ng-template>
+
+<!-- Hidden Report Template for PDF Generation -->
+<div id="pdf-report" class="pdf-report-container">
+  <div class="report-header">
+    <h1>HOSPITAL DISCHARGE SUMMARY</h1>
+    <div class="report-meta">
+      <span><strong>Report ID:</strong> {{ summary?.id }}</span>
+      <span>
+        <strong>Date:</strong>
+        {{ summary?.dischargeDate | date: "longDate" }}
+      </span>
+    </div>
+  </div>
+
+  <div class="report-section patient-info">
+    <div class="info-row">
+      <div class="info-item">
+        <label>Patient Name</label>
+        <span>{{ summary?.patientName }}</span>
+      </div>
+      <div class="info-item">
+        <label>Patient ID</label>
+        <span>{{ summary?.patientId }}</span>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-item">
+        <label>Doctor</label>
+        <span>{{ summary?.doctorName }}</span>
+      </div>
+      <div class="info-item">
+        <label>Admission Date</label>
+        <span>{{ summary?.admissionDate | date: "mediumDate" }}</span>
+      </div>
+      <div class="info-item">
+        <label>Discharge Date</label>
+        <span>{{ summary?.dischargeDate | date: "mediumDate" }}</span>
+      </div>
+    </div>
+  </div>
+
+  <hr class="report-divider" />
+
+  <div class="report-body">
+    <div class="report-block">
+      <h3>Diagnosis</h3>
+      <p>{{ summary?.diagnosis }}</p>
+    </div>
+
+    <div class="report-block">
+      <h3>Treatment Given</h3>
+      <p>{{ summary?.treatmentGiven }}</p>
+    </div>
+
+    <div class="report-block">
+      <h3>Prescribed Medicines</h3>
+      <ul>
+        <li *ngFor="let med of summary?.prescribedMedicines">
+          {{ med }}
+        </li>
+      </ul>
+    </div>
+
+    <div class="report-block">
+      <h3>Follow-up Instructions</h3>
+      <p>{{ summary?.followUpInstructions }}</p>
+    </div>
+  </div>
+
+  <div class="report-footer">
+    <p>This is a computer-generated document.</p>
+    <p>Generated on {{ today | date: "medium" }}</p>
+  </div>
+</div>

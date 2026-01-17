@@ -3,11 +3,109 @@
   padding: 2rem;
 }
 
+/* Hide UI elements during print */
 @media print {
-  :host {
-    padding: 0;
+  p-button,
+  .pi {
+    display: none !important;
   }
-  p-button {
-    display: none;
+}
+
+/* PDF-only container */
+.pdf-report-container {
+  position: absolute;
+  top: 0;
+  left: -9999px;
+  width: 210mm;
+  min-height: 297mm;
+  padding: 20mm;
+  background: #fff;
+  color: #000;
+  font-family: 'Times New Roman', serif;
+  box-sizing: border-box;
+}
+
+/* Header */
+.report-header {
+  text-align: center;
+  border-bottom: 2px solid #000;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    text-transform: uppercase;
   }
+
+  .report-meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    margin-top: 0.5rem;
+  }
+}
+
+/* Patient Info */
+.patient-info {
+  margin-bottom: 2rem;
+
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .info-item {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      color: #555;
+    }
+
+    span {
+      font-size: 15px;
+    }
+  }
+}
+
+/* Body */
+.report-body {
+  .report-block {
+    margin-bottom: 1.5rem;
+
+    h3 {
+      font-size: 15px;
+      text-transform: uppercase;
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 0.5rem;
+      padding-bottom: 0.25rem;
+    }
+
+    p,
+    li {
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    ul {
+      padding-left: 1.5rem;
+    }
+  }
+}
+
+/* Footer */
+.report-footer {
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 10px;
+  color: #666;
+  border-top: 1px solid #ccc;
+  padding-top: 1rem;
 }
