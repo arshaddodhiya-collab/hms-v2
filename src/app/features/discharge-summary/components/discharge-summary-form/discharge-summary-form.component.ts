@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DischargeSummaryService } from '../../services/discharge-summary.service';
+import { DischargeSummary } from '../../models/discharge-summary.model';
 
 @Component({
   selector: 'app-discharge-summary-form',
@@ -10,6 +12,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class DischargeSummaryFormComponent implements OnInit {
   form!: FormGroup;
   isEditMode = false;
+  summaryId: string | null = null;
 
   statusOptions = [
     { label: 'Admitted', value: 'Admitted' },
@@ -20,15 +23,16 @@ export class DischargeSummaryFormComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
+    private dischargeSummaryService: DischargeSummaryService,
   ) {}
 
   ngOnInit(): void {
     this.initForm();
 
-    const id = this.route.snapshot.paramMap.get('id');
-    if (id) {
+    this.summaryId = this.route.snapshot.paramMap.get('id');
+    if (this.summaryId) {
       this.isEditMode = true;
-      this.loadSummary(id);
+      this.loadSummary(this.summaryId);
     }
   }
 
@@ -41,38 +45,27 @@ export class DischargeSummaryFormComponent implements OnInit {
       admissionDate: [null, Validators.required],
       dischargeDate: [null, Validators.required],
       diagnosis: ['', Validators.required],
-
-      // 🔑 IMPORTANT: must be empty string, NOT null
       treatmentGiven: [''],
       followUpInstructions: [''],
-
       prescribedMedicines: [''],
     });
   }
 
   private loadSummary(id: string): void {
-    // 🔴 Replace this mock with API call
-    const summaryFromApi = {
-      patientName: 'John Doe',
-      patientId: 'P-1001',
-      doctorName: 'Dr. Smith',
-      status: 'Discharged',
-      admissionDate: new Date('2023-10-01'),
-      dischargeDate: new Date('2023-10-10'),
-      diagnosis: 'Acute Bronchitis',
-
-      // ⚠️ Backend often sends null → sanitize it
-      treatmentGiven: null,
-      followUpInstructions: null,
-
-      prescribedMedicines: 'Amoxicillin 500mg, Paracetamol 500mg',
-    };
-
-    this.form.patchValue({
-      ...summaryFromApi,
-      treatmentGiven: summaryFromApi.treatmentGiven || '',
-      followUpInstructions: summaryFromApi.followUpInstructions || '',
-    });
+    this.dischargeSummaryService
+      .getDischargeSummaryById(id)
+      .subscribe((data) => {
+        if (data) {
+          this.form.patchValue({
+            ...data,
+            prescribedMedicines: data.prescribedMedicines.join(', '),
+            admissionDate: new Date(data.admissionDate),
+            dischargeDate: new Date(data.dischargeDate),
+            treatmentGiven: data.treatmentGiven || '',
+            followUpInstructions: data.followUpInstructions || '',
+          });
+        }
+      });
   }
 
   onSubmit(): void {
@@ -81,19 +74,28 @@ export class DischargeSummaryFormComponent implements OnInit {
       return;
     }
 
-    const payload = {
-      ...this.form.value,
-      prescribedMedicines: this.form.value.prescribedMedicines
-        ? this.form.value.prescribedMedicines
-            .split(',')
-            .map((m: string) => m.trim())
+    const formValue = this.form.value;
+    const summary: DischargeSummary = {
+      id: this.summaryId || '',
+      ...formValue,
+      prescribedMedicines: formValue.prescribedMedicines
+        ? formValue.prescribedMedicines.split(',').map((m: string) => m.trim())
         : [],
     };
 
-    console.log('Submitting Discharge Summary:', payload);
-
-    // 🔴 Replace with API call
-    this.router.navigate(['/discharge-summary']);
+    if (this.isEditMode) {
+      this.dischargeSummaryService
+        .updateDischargeSummary(summary)
+        .subscribe(() => {
+          this.router.navigate(['/discharge-summary', this.summaryId]);
+        });
+    } else {
+      this.dischargeSummaryService
+        .createDischargeSummary(summary)
+        .subscribe(() => {
+          this.router.navigate(['/discharge-summary']);
+        });
+    }
   }
 
   cancel(): void {
