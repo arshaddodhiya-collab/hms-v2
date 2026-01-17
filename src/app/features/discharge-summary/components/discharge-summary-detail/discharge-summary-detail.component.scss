@@ -1,0 +1,13 @@
+:host {
+  display: block;
+  padding: 2rem;
+}
+
+@media print {
+  :host {
+    padding: 0;
+  }
+  p-button {
+    display: none;
+  }
+}
