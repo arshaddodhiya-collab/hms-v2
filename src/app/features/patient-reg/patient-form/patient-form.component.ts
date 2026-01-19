@@ -20,6 +20,8 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PanelModule } from 'primeng/panel';
 import { RippleModule } from 'primeng/ripple';
 import { ChipModule } from 'primeng/chip';
+import { InputMaskModule } from 'primeng/inputmask';
+import { KeyFilterModule } from 'primeng/keyfilter';
 
 @Component({
   selector: 'app-patient-form',
@@ -35,6 +37,8 @@ import { ChipModule } from 'primeng/chip';
     PanelModule,
     RippleModule,
     ChipModule,
+    InputMaskModule,
+    KeyFilterModule,
   ],
   templateUrl: './patient-form.component.html',
   styleUrl: './patient-form.component.scss',
@@ -42,6 +46,7 @@ import { ChipModule } from 'primeng/chip';
 export class PatientFormComponent {
   patientForm: FormGroup;
   inputValidation = signal(false);
+  nameRegex = /[a-zA-Z\s]/; // Allow letters and spaces
 
   genderOptions = [
     { label: 'Male', value: 'Male' },

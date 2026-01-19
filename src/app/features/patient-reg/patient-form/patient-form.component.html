@@ -15,6 +15,7 @@
             id="firstName"
             formControlName="firstName"
             class="w-full"
+            [pKeyFilter]="nameRegex"
           />
           @if (
             patientForm.get("personalDetails.firstName")?.invalid &&
@@ -44,6 +45,7 @@
             id="lastName"
             formControlName="lastName"
             class="w-full"
+            [pKeyFilter]="nameRegex"
           />
           @if (
             patientForm.get("personalDetails.lastName")?.invalid &&
@@ -171,12 +173,13 @@
         </div>
         <div class="field col-12 md:col-6">
           <label for="phoneNumber" class="font-medium">Phone Number</label>
-          <input
-            pInputText
+          <p-inputMask
             id="phoneNumber"
+            mask="(999) 999-9999"
+            placeholder="(999) 999-9999"
             formControlName="phoneNumber"
-            class="w-full"
-          />
+            styleClass="w-full"
+          ></p-inputMask>
           @if (
             patientForm.get("contactInfo.phoneNumber")?.invalid &&
             patientForm.get("contactInfo.phoneNumber")?.touched
@@ -216,7 +219,13 @@
           </div>
           <div class="field col-12 md:col-6">
             <label for="city" class="font-medium">City</label>
-            <input pInputText id="city" formControlName="city" class="w-full" />
+            <input
+              pInputText
+              id="city"
+              formControlName="city"
+              class="w-full"
+              [pKeyFilter]="nameRegex"
+            />
             @if (
               patientForm.get("contactInfo.address.city")?.invalid &&
               patientForm.get("contactInfo.address.city")?.touched
@@ -231,6 +240,7 @@
               id="state"
               formControlName="state"
               class="w-full"
+              [pKeyFilter]="nameRegex"
             />
             @if (
               patientForm.get("contactInfo.address.state")?.invalid &&
@@ -241,12 +251,13 @@
           </div>
           <div class="field col-12 md:col-6">
             <label for="postalCode" class="font-medium">Postal Code</label>
-            <input
-              pInputText
+            <p-inputMask
               id="postalCode"
+              mask="999999"
+              placeholder="999999"
               formControlName="postalCode"
-              class="w-full"
-            />
+              styleClass="w-full"
+            ></p-inputMask>
             @if (
               patientForm.get("contactInfo.address.postalCode")?.invalid &&
               patientForm.get("contactInfo.address.postalCode")?.touched
@@ -275,6 +286,7 @@
               id="country"
               formControlName="country"
               class="w-full"
+              [pKeyFilter]="nameRegex"
             />
             @if (
               patientForm.get("contactInfo.address.country")?.invalid &&
@@ -450,7 +462,12 @@
             <div class="formgrid grid">
               <div class="field col-12 md:col-4">
                 <label class="font-medium">Name</label>
-                <input pInputText formControlName="name" class="w-full" />
+                <input
+                  pInputText
+                  formControlName="name"
+                  class="w-full"
+                  [pKeyFilter]="nameRegex"
+                />
                 @if (
                   contact.get("name")?.invalid && contact.get("name")?.touched
                 ) {
@@ -479,11 +496,12 @@
               </div>
               <div class="field col-12 md:col-4">
                 <label class="font-medium">Phone</label>
-                <input
-                  pInputText
+                <p-inputMask
+                  mask="(999) 999-9999"
+                  placeholder="(999) 999-9999"
                   formControlName="phoneNumber"
-                  class="w-full"
-                />
+                  styleClass="w-full"
+                ></p-inputMask>
                 @if (
                   contact.get("phoneNumber")?.invalid &&
                   contact.get("phoneNumber")?.touched
@@ -515,6 +533,7 @@
             id="providerName"
             formControlName="providerName"
             class="w-full"
+            [pKeyFilter]="nameRegex"
           />
           @if (
             patientForm.get("insuranceInfo.providerName")?.invalid &&
@@ -530,6 +549,7 @@
             id="policyNumber"
             formControlName="policyNumber"
             class="w-full"
+            pKeyFilter="alphanum"
           />
           @if (
             patientForm.get("insuranceInfo.policyNumber")?.invalid &&
