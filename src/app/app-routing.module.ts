@@ -14,6 +14,18 @@ const routes: Routes = [
     redirectTo: 'discharge-summary',
     pathMatch: 'full',
   },
+  {
+    path: 'patient-reg',
+    loadChildren: () =>
+      import('./features/patient-reg/patient-reg.module').then(
+        (m) => m.PatientRegModule,
+      ),
+  },
+  {
+    path: '',
+    redirectTo: 'patient-reg',
+    pathMatch: 'full',
+  },
 ];
 
 @NgModule({

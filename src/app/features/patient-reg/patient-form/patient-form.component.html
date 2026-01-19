@@ -1,1 +1,355 @@
-<p>patient-form works!</p>
+<div class="card p-4">
+  <h2 class="text-3xl font-bold mb-4">Patient Registration Form</h2>
+  <form
+    [formGroup]="patientForm"
+    (ngSubmit)="onSubmit()"
+    class="flex flex-column gap-4"
+  >
+    <!-- Personal Details -->
+    <p-panel header="Personal Details" [toggleable]="true">
+      <div formGroupName="personalDetails" class="formgrid grid">
+        <div class="field col-12 md:col-6">
+          <label for="firstName" class="font-medium">First Name</label>
+          <input
+            pInputText
+            id="firstName"
+            formControlName="firstName"
+            class="w-full"
+          />
+        </div>
+        <div class="field col-12 md:col-6">
+          <label for="lastName" class="font-medium">Last Name</label>
+          <input
+            pInputText
+            id="lastName"
+            formControlName="lastName"
+            class="w-full"
+          />
+        </div>
+        <div class="field col-12 md:col-6">
+          <label for="dateOfBirth" class="font-medium">Date of Birth</label>
+          <p-calendar
+            id="dateOfBirth"
+            formControlName="dateOfBirth"
+            [showIcon]="true"
+            dateFormat="yy-mm-dd"
+            styleClass="w-full"
+            inputStyleClass="w-full"
+          ></p-calendar>
+        </div>
+        <div class="field col-12 md:col-6">
+          <label for="gender" class="font-medium">Gender</label>
+          <p-dropdown
+            id="gender"
+            [options]="genderOptions"
+            formControlName="gender"
+            placeholder="Select Gender"
+            styleClass="w-full"
+          ></p-dropdown>
+        </div>
+        <div class="field col-12 md:col-6">
+          <label for="nationality" class="font-medium">Nationality</label>
+          <input
+            pInputText
+            id="nationality"
+            formControlName="nationality"
+            class="w-full"
+          />
+        </div>
+        <div class="field col-12 md:col-6">
+          <label for="maritalStatus" class="font-medium">Marital Status</label>
+          <p-dropdown
+            id="maritalStatus"
+            [options]="maritalStatusOptions"
+            formControlName="maritalStatus"
+            placeholder="Select Status"
+            styleClass="w-full"
+          ></p-dropdown>
+        </div>
+      </div>
+    </p-panel>
+
+    <!-- Contact Info -->
+    <p-panel header="Contact Info" [toggleable]="true">
+      <div formGroupName="contactInfo" class="formgrid grid">
+        <div class="field col-12 md:col-6">
+          <label for="email" class="font-medium">Email</label>
+          <input pInputText id="email" formControlName="email" class="w-full" />
+        </div>
+        <div class="field col-12 md:col-6">
+          <label for="phoneNumber" class="font-medium">Phone Number</label>
+          <input
+            pInputText
+            id="phoneNumber"
+            formControlName="phoneNumber"
+            class="w-full"
+          />
+        </div>
+
+        <div formGroupName="address" class="col-12 formgrid grid mt-3">
+          <h4 class="col-12 text-lg font-medium mb-2">Address</h4>
+          <div class="field col-12">
+            <label for="street" class="font-medium">Street</label>
+            <input
+              pInputText
+              id="street"
+              formControlName="street"
+              class="w-full"
+            />
+          </div>
+          <div class="field col-12 md:col-6">
+            <label for="city" class="font-medium">City</label>
+            <input pInputText id="city" formControlName="city" class="w-full" />
+          </div>
+          <div class="field col-12 md:col-6">
+            <label for="state" class="font-medium">State</label>
+            <input
+              pInputText
+              id="state"
+              formControlName="state"
+              class="w-full"
+            />
+          </div>
+          <div class="field col-12 md:col-6">
+            <label for="postalCode" class="font-medium">Postal Code</label>
+            <input
+              pInputText
+              id="postalCode"
+              formControlName="postalCode"
+              class="w-full"
+            />
+          </div>
+          <div class="field col-12 md:col-6">
+            <label for="country" class="font-medium">Country</label>
+            <input
+              pInputText
+              id="country"
+              formControlName="country"
+              class="w-full"
+            />
+          </div>
+        </div>
+      </div>
+    </p-panel>
+
+    <!-- Medical Info -->
+    <p-panel header="Medical Info" [toggleable]="true">
+      <div formGroupName="medicalInfo" class="flex flex-column gap-4">
+        <div class="field">
+          <label for="bloodGroup" class="block font-medium mb-2"
+            >Blood Group</label
+          >
+          <p-dropdown
+            id="bloodGroup"
+            [options]="bloodGroupOptions"
+            formControlName="bloodGroup"
+            placeholder="Select Blood Group"
+            styleClass="w-full md:w-20rem"
+          ></p-dropdown>
+        </div>
+
+        <!-- Allergies -->
+        <div>
+          <div class="flex justify-content-between align-items-center mb-2">
+            <label class="font-medium">Allergies</label>
+            <p-button
+              label="Add Allergy"
+              icon="pi pi-plus"
+              (onClick)="addAllergy()"
+              size="small"
+              [outlined]="true"
+            ></p-button>
+          </div>
+          <div formArrayName="allergies" class="flex flex-column gap-2">
+            <div
+              *ngFor="let allergy of allergies.controls; let i = index"
+              class="p-inputgroup"
+            >
+              <input
+                pInputText
+                [formControlName]="i"
+                placeholder="Allergy Name"
+              />
+              <button
+                type="button"
+                pButton
+                icon="pi pi-trash"
+                class="p-button-danger"
+                (click)="removeAllergy(i)"
+              ></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Current Medications -->
+        <div>
+          <div class="flex justify-content-between align-items-center mb-2">
+            <label class="font-medium">Current Medications</label>
+            <p-button
+              label="Add Medication"
+              icon="pi pi-plus"
+              (onClick)="addMedication()"
+              size="small"
+              [outlined]="true"
+            ></p-button>
+          </div>
+          <div
+            formArrayName="currentMedications"
+            class="flex flex-column gap-2"
+          >
+            <div
+              *ngFor="let med of currentMedications.controls; let i = index"
+              class="p-inputgroup"
+            >
+              <input
+                pInputText
+                [formControlName]="i"
+                placeholder="Medication Name"
+              />
+              <button
+                type="button"
+                pButton
+                icon="pi pi-trash"
+                class="p-button-danger"
+                (click)="removeMedication(i)"
+              ></button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Past Surgeries -->
+        <div>
+          <div class="flex justify-content-between align-items-center mb-2">
+            <label class="font-medium">Past Surgeries</label>
+            <p-button
+              label="Add Surgery"
+              icon="pi pi-plus"
+              (onClick)="addSurgery()"
+              size="small"
+              [outlined]="true"
+            ></p-button>
+          </div>
+          <div formArrayName="pastSurgeries" class="flex flex-column gap-2">
+            <div
+              *ngFor="let surgery of pastSurgeries.controls; let i = index"
+              class="p-inputgroup"
+            >
+              <input
+                pInputText
+                [formControlName]="i"
+                placeholder="Surgery Details"
+              />
+              <button
+                type="button"
+                pButton
+                icon="pi pi-trash"
+                class="p-button-danger"
+                (click)="removeSurgery(i)"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-panel>
+
+    <!-- Emergency Contacts -->
+    <p-panel header="Emergency Contacts" [toggleable]="true">
+      <div class="flex justify-content-end mb-3">
+        <p-button
+          label="Add Contact"
+          icon="pi pi-plus"
+          (onClick)="addEmergencyContact()"
+          size="small"
+        ></p-button>
+      </div>
+      <div formArrayName="emergencyContacts" class="flex flex-column gap-3">
+        <div
+          *ngFor="let contact of emergencyContacts.controls; let i = index"
+          [formGroupName]="i"
+          class="surface-card p-3 border-round border-1 surface-border relative"
+        >
+          <button
+            type="button"
+            pButton
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-danger p-button-text absolute top-0 right-0 m-2"
+            (click)="removeEmergencyContact(i)"
+          ></button>
+          <div class="formgrid grid">
+            <div class="field col-12 md:col-4">
+              <label class="font-medium">Name</label>
+              <input pInputText formControlName="name" class="w-full" />
+            </div>
+            <div class="field col-12 md:col-4">
+              <label class="font-medium">Relationship</label>
+              <input pInputText formControlName="relationship" class="w-full" />
+            </div>
+            <div class="field col-12 md:col-4">
+              <label class="font-medium">Phone</label>
+              <input pInputText formControlName="phoneNumber" class="w-full" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </p-panel>
+
+    <!-- Insurance Info -->
+    <p-panel header="Insurance Info" [toggleable]="true">
+      <div formGroupName="insuranceInfo" class="formgrid grid">
+        <div class="field col-12 md:col-6">
+          <label for="providerName" class="font-medium">Provider Name</label>
+          <input
+            pInputText
+            id="providerName"
+            formControlName="providerName"
+            class="w-full"
+          />
+        </div>
+        <div class="field col-12 md:col-6">
+          <label for="policyNumber" class="font-medium">Policy Number</label>
+          <input
+            pInputText
+            id="policyNumber"
+            formControlName="policyNumber"
+            class="w-full"
+          />
+        </div>
+        <div class="field col-12">
+          <label for="coverageDetails" class="font-medium"
+            >Coverage Details</label
+          >
+          <textarea
+            pInputTextarea
+            id="coverageDetails"
+            formControlName="coverageDetails"
+            rows="3"
+            class="w-full"
+          ></textarea>
+        </div>
+        <div class="field col-12 md:col-6">
+          <label for="expirationDate" class="font-medium"
+            >Expiration Date</label
+          >
+          <p-calendar
+            id="expirationDate"
+            formControlName="expirationDate"
+            [showIcon]="true"
+            dateFormat="yy-mm-dd"
+            styleClass="w-full"
+            inputStyleClass="w-full"
+          ></p-calendar>
+        </div>
+      </div>
+    </p-panel>
+
+    <div class="flex justify-content-end">
+      <p-button
+        type="submit"
+        label="Submit Registration"
+        [disabled]="!patientForm.valid"
+        icon="pi pi-check"
+        styleClass="p-button-success"
+      ></p-button>
+    </div>
+  </form>
+</div>
