@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
@@ -6,8 +6,10 @@ import {
   FormArray,
   Validators,
   ReactiveFormsModule,
+  FormControl,
 } from '@angular/forms';
 import { PatientService } from '../services/patient.service';
+import { PatientValidators } from '../validators/patient.validators';
 
 // PrimeNG Modules
 import { InputTextModule } from 'primeng/inputtext';
@@ -37,6 +39,7 @@ import { RippleModule } from 'primeng/ripple';
 })
 export class PatientFormComponent {
   patientForm: FormGroup;
+  inputValidation = signal(false);
 
   genderOptions = [
     { label: 'Male', value: 'Male' },
@@ -83,13 +86,10 @@ export class PatientFormComponent {
       personalDetails: this.fb.group({
         firstName: [
           '',
-          [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)],
+          [Validators.required, PatientValidators.noSpecialChars],
         ],
-        lastName: [
-          '',
-          [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)],
-        ],
-        dateOfBirth: ['', Validators.required],
+        lastName: ['', [Validators.required, PatientValidators.noSpecialChars]],
+        dateOfBirth: ['', [Validators.required, PatientValidators.pastDate]],
         gender: ['', Validators.required],
         nationality: ['', Validators.required],
         maritalStatus: ['', Validators.required],
@@ -98,7 +98,7 @@ export class PatientFormComponent {
         email: ['', [Validators.required, Validators.email]],
         phoneNumber: [
           '',
-          [Validators.required, Validators.pattern(/^[0-9+\-\s]*$/)],
+          [Validators.required, PatientValidators.validPhoneNumber],
         ],
         address: this.fb.group({
           street: ['', Validators.required],
@@ -106,7 +106,7 @@ export class PatientFormComponent {
           state: ['', Validators.required],
           postalCode: [
             '',
-            [Validators.required, Validators.pattern(/^[0-9]*$/)],
+            [Validators.required, PatientValidators.numericOnly],
           ],
           country: ['', Validators.required],
         }),
@@ -122,7 +122,10 @@ export class PatientFormComponent {
         providerName: ['', Validators.required],
         policyNumber: ['', Validators.required],
         coverageDetails: ['', Validators.required],
-        expirationDate: ['', Validators.required],
+        expirationDate: [
+          '',
+          [Validators.required, PatientValidators.futureDate],
+        ],
       }),
     });
 
@@ -179,11 +182,11 @@ export class PatientFormComponent {
   addEmergencyContact() {
     this.emergencyContacts.push(
       this.fb.group({
-        name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
+        name: ['', [Validators.required, PatientValidators.noSpecialChars]],
         relationship: ['', Validators.required],
         phoneNumber: [
           '',
-          [Validators.required, Validators.pattern(/^[0-9+\-\s]*$/)],
+          [Validators.required, PatientValidators.validPhoneNumber],
         ],
       }),
     );
@@ -203,7 +206,62 @@ export class PatientFormComponent {
           this.patientForm.reset();
         });
     } else {
-      this.patientForm.markAllAsTouched();
+      this.inputValidation.set(false); // Reset signal at start of validation
+      this.markFormGroupDirty(this.patientForm, true);
+    }
+  }
+
+  markFormGroupDirty(
+    control: import('@angular/forms').AbstractControl | null | undefined,
+    scrollToInvalid?: boolean,
+  ) {
+    if (!control) return;
+
+    if (control instanceof FormControl) {
+      control.markAsDirty();
+      control.markAsTouched();
+      return;
+    }
+
+    if (control instanceof FormGroup) {
+      Object.keys(control.controls).forEach((field) => {
+        const childControl = control.get(field);
+        if (!childControl) return;
+
+        if (childControl instanceof FormControl) {
+          childControl.markAsDirty();
+          childControl.markAsTouched();
+          if (
+            childControl.invalid &&
+            !this.inputValidation() &&
+            scrollToInvalid
+          ) {
+            const invalidControlElement = document.querySelector(
+              `[formcontrolname="${field}"]`,
+            );
+            if (invalidControlElement) {
+              invalidControlElement.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+              });
+              if (
+                invalidControlElement instanceof HTMLInputElement ||
+                invalidControlElement instanceof HTMLTextAreaElement
+              ) {
+                invalidControlElement.focus();
+              }
+            }
+            this.inputValidation.set(true);
+          }
+        } else {
+          // Recursive call for nested Groups or Arrays
+          this.markFormGroupDirty(childControl, scrollToInvalid);
+        }
+      });
+    } else if (control instanceof FormArray) {
+      control.controls.forEach((subControl) =>
+        this.markFormGroupDirty(subControl, scrollToInvalid),
+      );
     }
   }
 }
