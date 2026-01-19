@@ -62,27 +62,52 @@ export class PatientFormComponent {
     { label: 'AB-', value: 'AB-' },
   ];
 
+  nationalityOptions = [
+    { label: 'United States', value: 'United States' },
+    { label: 'India', value: 'India' },
+    { label: 'United Kingdom', value: 'United Kingdom' },
+    { label: 'Canada', value: 'Canada' },
+    { label: 'Australia', value: 'Australia' },
+    { label: 'Germany', value: 'Germany' },
+    { label: 'France', value: 'France' },
+    { label: 'China', value: 'China' },
+    { label: 'Japan', value: 'Japan' },
+    { label: 'Brazil', value: 'Brazil' },
+  ];
+
   constructor(
     private fb: FormBuilder,
     private patientService: PatientService,
   ) {
     this.patientForm = this.fb.group({
       personalDetails: this.fb.group({
-        firstName: ['', Validators.required],
-        lastName: ['', Validators.required],
+        firstName: [
+          '',
+          [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)],
+        ],
+        lastName: [
+          '',
+          [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)],
+        ],
         dateOfBirth: ['', Validators.required],
         gender: ['', Validators.required],
         nationality: ['', Validators.required],
-        maritalStatus: [''],
+        maritalStatus: ['', Validators.required],
       }),
       contactInfo: this.fb.group({
         email: ['', [Validators.required, Validators.email]],
-        phoneNumber: ['', Validators.required],
+        phoneNumber: [
+          '',
+          [Validators.required, Validators.pattern(/^[0-9+\-\s]*$/)],
+        ],
         address: this.fb.group({
           street: ['', Validators.required],
           city: ['', Validators.required],
           state: ['', Validators.required],
-          postalCode: ['', Validators.required],
+          postalCode: [
+            '',
+            [Validators.required, Validators.pattern(/^[0-9]*$/)],
+          ],
           country: ['', Validators.required],
         }),
       }),
@@ -128,7 +153,7 @@ export class PatientFormComponent {
 
   // Methods to add/remove items
   addAllergy() {
-    this.allergies.push(this.fb.control(''));
+    this.allergies.push(this.fb.control('', Validators.required));
   }
 
   removeAllergy(index: number) {
@@ -136,7 +161,7 @@ export class PatientFormComponent {
   }
 
   addMedication() {
-    this.currentMedications.push(this.fb.control(''));
+    this.currentMedications.push(this.fb.control('', Validators.required));
   }
 
   removeMedication(index: number) {
@@ -144,7 +169,7 @@ export class PatientFormComponent {
   }
 
   addSurgery() {
-    this.pastSurgeries.push(this.fb.control(''));
+    this.pastSurgeries.push(this.fb.control('', Validators.required));
   }
 
   removeSurgery(index: number) {
@@ -154,9 +179,12 @@ export class PatientFormComponent {
   addEmergencyContact() {
     this.emergencyContacts.push(
       this.fb.group({
-        name: ['', Validators.required],
+        name: ['', [Validators.required, Validators.pattern(/^[a-zA-Z\s]*$/)]],
         relationship: ['', Validators.required],
-        phoneNumber: ['', Validators.required],
+        phoneNumber: [
+          '',
+          [Validators.required, Validators.pattern(/^[0-9+\-\s]*$/)],
+        ],
       }),
     );
   }

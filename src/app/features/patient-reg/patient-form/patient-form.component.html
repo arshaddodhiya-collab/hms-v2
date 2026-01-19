@@ -16,6 +16,26 @@
             formControlName="firstName"
             class="w-full"
           />
+          @if (
+            patientForm.get("personalDetails.firstName")?.invalid &&
+            patientForm.get("personalDetails.firstName")?.touched
+          ) {
+            <small class="p-error block">
+              @if (
+                patientForm
+                  .get("personalDetails.firstName")
+                  ?.hasError("required")
+              ) {
+                First Name is required.
+              } @else if (
+                patientForm
+                  .get("personalDetails.firstName")
+                  ?.hasError("pattern")
+              ) {
+                Only letters allowed.
+              }
+            </small>
+          }
         </div>
         <div class="field col-12 md:col-6">
           <label for="lastName" class="font-medium">Last Name</label>
@@ -25,6 +45,24 @@
             formControlName="lastName"
             class="w-full"
           />
+          @if (
+            patientForm.get("personalDetails.lastName")?.invalid &&
+            patientForm.get("personalDetails.lastName")?.touched
+          ) {
+            <small class="p-error block">
+              @if (
+                patientForm
+                  .get("personalDetails.lastName")
+                  ?.hasError("required")
+              ) {
+                Last Name is required.
+              } @else if (
+                patientForm.get("personalDetails.lastName")?.hasError("pattern")
+              ) {
+                Only letters allowed.
+              }
+            </small>
+          }
         </div>
         <div class="field col-12 md:col-6">
           <label for="dateOfBirth" class="font-medium">Date of Birth</label>
@@ -36,6 +74,12 @@
             styleClass="w-full"
             inputStyleClass="w-full"
           ></p-calendar>
+          @if (
+            patientForm.get("personalDetails.dateOfBirth")?.invalid &&
+            patientForm.get("personalDetails.dateOfBirth")?.touched
+          ) {
+            <small class="p-error block">Date of Birth is required.</small>
+          }
         </div>
         <div class="field col-12 md:col-6">
           <label for="gender" class="font-medium">Gender</label>
@@ -46,15 +90,30 @@
             placeholder="Select Gender"
             styleClass="w-full"
           ></p-dropdown>
+          @if (
+            patientForm.get("personalDetails.gender")?.invalid &&
+            patientForm.get("personalDetails.gender")?.touched
+          ) {
+            <small class="p-error block">Gender is required.</small>
+          }
         </div>
         <div class="field col-12 md:col-6">
           <label for="nationality" class="font-medium">Nationality</label>
-          <input
-            pInputText
+          <p-dropdown
             id="nationality"
+            [options]="nationalityOptions"
             formControlName="nationality"
-            class="w-full"
-          />
+            placeholder="Select Nationality"
+            [filter]="true"
+            filterBy="label"
+            styleClass="w-full"
+          ></p-dropdown>
+          @if (
+            patientForm.get("personalDetails.nationality")?.invalid &&
+            patientForm.get("personalDetails.nationality")?.touched
+          ) {
+            <small class="p-error block">Nationality is required.</small>
+          }
         </div>
         <div class="field col-12 md:col-6">
           <label for="maritalStatus" class="font-medium">Marital Status</label>
@@ -65,6 +124,12 @@
             placeholder="Select Status"
             styleClass="w-full"
           ></p-dropdown>
+          @if (
+            patientForm.get("personalDetails.maritalStatus")?.invalid &&
+            patientForm.get("personalDetails.maritalStatus")?.touched
+          ) {
+            <small class="p-error block">Marital Status is required.</small>
+          }
         </div>
       </div>
     </p-panel>
@@ -75,6 +140,18 @@
         <div class="field col-12 md:col-6">
           <label for="email" class="font-medium">Email</label>
           <input pInputText id="email" formControlName="email" class="w-full" />
+          @if (
+            patientForm.get("contactInfo.email")?.hasError("required") &&
+            patientForm.get("contactInfo.email")?.touched
+          ) {
+            <small class="p-error block">Email is required.</small>
+          }
+          @if (
+            patientForm.get("contactInfo.email")?.hasError("email") &&
+            patientForm.get("contactInfo.email")?.touched
+          ) {
+            <small class="p-error block">Invalid email format.</small>
+          }
         </div>
         <div class="field col-12 md:col-6">
           <label for="phoneNumber" class="font-medium">Phone Number</label>
@@ -84,6 +161,22 @@
             formControlName="phoneNumber"
             class="w-full"
           />
+          @if (
+            patientForm.get("contactInfo.phoneNumber")?.invalid &&
+            patientForm.get("contactInfo.phoneNumber")?.touched
+          ) {
+            <small class="p-error block">
+              @if (
+                patientForm.get("contactInfo.phoneNumber")?.hasError("required")
+              ) {
+                Phone Number is required.
+              } @else if (
+                patientForm.get("contactInfo.phoneNumber")?.hasError("pattern")
+              ) {
+                Invalid phone number format (only numbers, +, -).
+              }
+            </small>
+          }
         </div>
 
         <div formGroupName="address" class="col-12 formgrid grid mt-3">
@@ -96,10 +189,22 @@
               formControlName="street"
               class="w-full"
             />
+            @if (
+              patientForm.get("contactInfo.address.street")?.invalid &&
+              patientForm.get("contactInfo.address.street")?.touched
+            ) {
+              <small class="p-error block">Street is required.</small>
+            }
           </div>
           <div class="field col-12 md:col-6">
             <label for="city" class="font-medium">City</label>
             <input pInputText id="city" formControlName="city" class="w-full" />
+            @if (
+              patientForm.get("contactInfo.address.city")?.invalid &&
+              patientForm.get("contactInfo.address.city")?.touched
+            ) {
+              <small class="p-error block">City is required.</small>
+            }
           </div>
           <div class="field col-12 md:col-6">
             <label for="state" class="font-medium">State</label>
@@ -109,6 +214,12 @@
               formControlName="state"
               class="w-full"
             />
+            @if (
+              patientForm.get("contactInfo.address.state")?.invalid &&
+              patientForm.get("contactInfo.address.state")?.touched
+            ) {
+              <small class="p-error block">State is required.</small>
+            }
           </div>
           <div class="field col-12 md:col-6">
             <label for="postalCode" class="font-medium">Postal Code</label>
@@ -118,6 +229,26 @@
               formControlName="postalCode"
               class="w-full"
             />
+            @if (
+              patientForm.get("contactInfo.address.postalCode")?.invalid &&
+              patientForm.get("contactInfo.address.postalCode")?.touched
+            ) {
+              <small class="p-error block">
+                @if (
+                  patientForm
+                    .get("contactInfo.address.postalCode")
+                    ?.hasError("required")
+                ) {
+                  Postal Code is required.
+                } @else if (
+                  patientForm
+                    .get("contactInfo.address.postalCode")
+                    ?.hasError("pattern")
+                ) {
+                  Only numbers allowed.
+                }
+              </small>
+            }
           </div>
           <div class="field col-12 md:col-6">
             <label for="country" class="font-medium">Country</label>
@@ -127,6 +258,12 @@
               formControlName="country"
               class="w-full"
             />
+            @if (
+              patientForm.get("contactInfo.address.country")?.invalid &&
+              patientForm.get("contactInfo.address.country")?.touched
+            ) {
+              <small class="p-error block">Country is required.</small>
+            }
           </div>
         </div>
       </div>
@@ -146,6 +283,12 @@
             placeholder="Select Blood Group"
             styleClass="w-full md:w-20rem"
           ></p-dropdown>
+          @if (
+            patientForm.get("medicalInfo.bloodGroup")?.invalid &&
+            patientForm.get("medicalInfo.bloodGroup")?.touched
+          ) {
+            <small class="p-error block">Blood Group is required.</small>
+          }
         </div>
 
         <!-- Allergies -->
@@ -161,23 +304,25 @@
             ></p-button>
           </div>
           <div formArrayName="allergies" class="flex flex-column gap-2">
-            <div
-              *ngFor="let allergy of allergies.controls; let i = index"
-              class="p-inputgroup"
-            >
-              <input
-                pInputText
-                [formControlName]="i"
-                placeholder="Allergy Name"
-              />
-              <button
-                type="button"
-                pButton
-                icon="pi pi-trash"
-                class="p-button-danger"
-                (click)="removeAllergy(i)"
-              ></button>
-            </div>
+            @for (allergy of allergies.controls; track i; let i = $index) {
+              <div class="p-inputgroup">
+                <input
+                  pInputText
+                  [formControlName]="i"
+                  placeholder="Allergy Name"
+                />
+                <button
+                  type="button"
+                  pButton
+                  icon="pi pi-trash"
+                  class="p-button-danger"
+                  (click)="removeAllergy(i)"
+                ></button>
+              </div>
+              @if (allergies.at(i).invalid && allergies.at(i).touched) {
+                <small class="p-error block">Allergy name is required.</small>
+              }
+            }
           </div>
         </div>
 
@@ -197,23 +342,30 @@
             formArrayName="currentMedications"
             class="flex flex-column gap-2"
           >
-            <div
-              *ngFor="let med of currentMedications.controls; let i = index"
-              class="p-inputgroup"
-            >
-              <input
-                pInputText
-                [formControlName]="i"
-                placeholder="Medication Name"
-              />
-              <button
-                type="button"
-                pButton
-                icon="pi pi-trash"
-                class="p-button-danger"
-                (click)="removeMedication(i)"
-              ></button>
-            </div>
+            @for (med of currentMedications.controls; track i; let i = $index) {
+              <div class="p-inputgroup">
+                <input
+                  pInputText
+                  [formControlName]="i"
+                  placeholder="Medication Name"
+                />
+                <button
+                  type="button"
+                  pButton
+                  icon="pi pi-trash"
+                  class="p-button-danger"
+                  (click)="removeMedication(i)"
+                ></button>
+              </div>
+              @if (
+                currentMedications.at(i).invalid &&
+                currentMedications.at(i).touched
+              ) {
+                <small class="p-error block"
+                  >Medication name is required.</small
+                >
+              }
+            }
           </div>
         </div>
 
@@ -230,23 +382,25 @@
             ></p-button>
           </div>
           <div formArrayName="pastSurgeries" class="flex flex-column gap-2">
-            <div
-              *ngFor="let surgery of pastSurgeries.controls; let i = index"
-              class="p-inputgroup"
-            >
-              <input
-                pInputText
-                [formControlName]="i"
-                placeholder="Surgery Details"
-              />
-              <button
-                type="button"
-                pButton
-                icon="pi pi-trash"
-                class="p-button-danger"
-                (click)="removeSurgery(i)"
-              ></button>
-            </div>
+            @for (surgery of pastSurgeries.controls; track i; let i = $index) {
+              <div class="p-inputgroup">
+                <input
+                  pInputText
+                  [formControlName]="i"
+                  placeholder="Surgery Details"
+                />
+                <button
+                  type="button"
+                  pButton
+                  icon="pi pi-trash"
+                  class="p-button-danger"
+                  (click)="removeSurgery(i)"
+                ></button>
+              </div>
+              @if (pastSurgeries.at(i).invalid && pastSurgeries.at(i).touched) {
+                <small class="p-error block">Surgery detail is required.</small>
+              }
+            }
           </div>
         </div>
       </div>
@@ -263,33 +417,73 @@
         ></p-button>
       </div>
       <div formArrayName="emergencyContacts" class="flex flex-column gap-3">
-        <div
-          *ngFor="let contact of emergencyContacts.controls; let i = index"
-          [formGroupName]="i"
-          class="surface-card p-3 border-round border-1 surface-border relative"
-        >
-          <button
-            type="button"
-            pButton
-            icon="pi pi-trash"
-            class="p-button-rounded p-button-danger p-button-text absolute top-0 right-0 m-2"
-            (click)="removeEmergencyContact(i)"
-          ></button>
-          <div class="formgrid grid">
-            <div class="field col-12 md:col-4">
-              <label class="font-medium">Name</label>
-              <input pInputText formControlName="name" class="w-full" />
-            </div>
-            <div class="field col-12 md:col-4">
-              <label class="font-medium">Relationship</label>
-              <input pInputText formControlName="relationship" class="w-full" />
-            </div>
-            <div class="field col-12 md:col-4">
-              <label class="font-medium">Phone</label>
-              <input pInputText formControlName="phoneNumber" class="w-full" />
+        @for (contact of emergencyContacts.controls; track i; let i = $index) {
+          <div
+            [formGroupName]="i"
+            class="surface-card p-3 border-round border-1 surface-border relative"
+          >
+            <button
+              type="button"
+              pButton
+              icon="pi pi-trash"
+              class="p-button-rounded p-button-danger p-button-text absolute top-0 right-0 m-2"
+              (click)="removeEmergencyContact(i)"
+            ></button>
+            <div class="formgrid grid">
+              <div class="field col-12 md:col-4">
+                <label class="font-medium">Name</label>
+                <input pInputText formControlName="name" class="w-full" />
+                @if (
+                  contact.get("name")?.invalid && contact.get("name")?.touched
+                ) {
+                  <small class="p-error block">
+                    @if (contact.get("name")?.hasError("required")) {
+                      Name is required.
+                    } @else if (contact.get("name")?.hasError("pattern")) {
+                      Only letters allowed.
+                    }
+                  </small>
+                }
+              </div>
+              <div class="field col-12 md:col-4">
+                <label class="font-medium">Relationship</label>
+                <input
+                  pInputText
+                  formControlName="relationship"
+                  class="w-full"
+                />
+                @if (
+                  contact.get("relationship")?.invalid &&
+                  contact.get("relationship")?.touched
+                ) {
+                  <small class="p-error block">Relationship is required.</small>
+                }
+              </div>
+              <div class="field col-12 md:col-4">
+                <label class="font-medium">Phone</label>
+                <input
+                  pInputText
+                  formControlName="phoneNumber"
+                  class="w-full"
+                />
+                @if (
+                  contact.get("phoneNumber")?.invalid &&
+                  contact.get("phoneNumber")?.touched
+                ) {
+                  <small class="p-error block">
+                    @if (contact.get("phoneNumber")?.hasError("required")) {
+                      Phone is required.
+                    } @else if (
+                      contact.get("phoneNumber")?.hasError("pattern")
+                    ) {
+                      Invalid phone number.
+                    }
+                  </small>
+                }
+              </div>
             </div>
           </div>
-        </div>
+        }
       </div>
     </p-panel>
 
@@ -304,6 +498,12 @@
             formControlName="providerName"
             class="w-full"
           />
+          @if (
+            patientForm.get("insuranceInfo.providerName")?.invalid &&
+            patientForm.get("insuranceInfo.providerName")?.touched
+          ) {
+            <small class="p-error block">Provider Name is required.</small>
+          }
         </div>
         <div class="field col-12 md:col-6">
           <label for="policyNumber" class="font-medium">Policy Number</label>
@@ -313,6 +513,12 @@
             formControlName="policyNumber"
             class="w-full"
           />
+          @if (
+            patientForm.get("insuranceInfo.policyNumber")?.invalid &&
+            patientForm.get("insuranceInfo.policyNumber")?.touched
+          ) {
+            <small class="p-error block">Policy Number is required.</small>
+          }
         </div>
         <div class="field col-12">
           <label for="coverageDetails" class="font-medium"
@@ -325,6 +531,12 @@
             rows="3"
             class="w-full"
           ></textarea>
+          @if (
+            patientForm.get("insuranceInfo.coverageDetails")?.invalid &&
+            patientForm.get("insuranceInfo.coverageDetails")?.touched
+          ) {
+            <small class="p-error block">Coverage Details is required.</small>
+          }
         </div>
         <div class="field col-12 md:col-6">
           <label for="expirationDate" class="font-medium"
@@ -338,6 +550,12 @@
             styleClass="w-full"
             inputStyleClass="w-full"
           ></p-calendar>
+          @if (
+            patientForm.get("insuranceInfo.expirationDate")?.invalid &&
+            patientForm.get("insuranceInfo.expirationDate")?.touched
+          ) {
+            <small class="p-error block">Expiration Date is required.</small>
+          }
         </div>
       </div>
     </p-panel>
