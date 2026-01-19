@@ -22,6 +22,7 @@ import { RippleModule } from 'primeng/ripple';
 import { ChipModule } from 'primeng/chip';
 import { InputMaskModule } from 'primeng/inputmask';
 import { KeyFilterModule } from 'primeng/keyfilter';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @Component({
   selector: 'app-patient-form',
@@ -39,6 +40,7 @@ import { KeyFilterModule } from 'primeng/keyfilter';
     ChipModule,
     InputMaskModule,
     KeyFilterModule,
+    InputSwitchModule,
   ],
   templateUrl: './patient-form.component.html',
   styleUrl: './patient-form.component.scss',
@@ -125,16 +127,57 @@ export class PatientFormComponent {
         pastSurgeries: this.fb.array([]),
       }),
       emergencyContacts: this.fb.array([]),
+      hasInsurance: [false],
       insuranceInfo: this.fb.group({
-        providerName: ['', Validators.required],
-        policyNumber: ['', Validators.required],
-        coverageDetails: ['', Validators.required],
-        expirationDate: [
-          '',
-          [Validators.required, PatientValidators.futureDate],
-        ],
+        providerName: [''],
+        policyNumber: [''],
+        coverageDetails: [''],
+        expirationDate: [''],
       }),
     });
+
+    // Handle dynamic validation for insurance info
+    this.patientForm
+      .get('hasInsurance')
+      ?.valueChanges.subscribe((hasInsurance) => {
+        const insuranceGroup = this.patientForm.get(
+          'insuranceInfo',
+        ) as FormGroup;
+        const controls = [
+          'providerName',
+          'policyNumber',
+          'coverageDetails',
+          'expirationDate',
+        ];
+
+        if (hasInsurance) {
+          insuranceGroup
+            .get('providerName')
+            ?.setValidators(Validators.required);
+          insuranceGroup
+            .get('policyNumber')
+            ?.setValidators(Validators.required);
+          insuranceGroup
+            .get('coverageDetails')
+            ?.setValidators(Validators.required);
+          insuranceGroup
+            .get('expirationDate')
+            ?.setValidators([
+              Validators.required,
+              PatientValidators.futureDate,
+            ]);
+        } else {
+          controls.forEach((controlName) => {
+            const control = insuranceGroup.get(controlName);
+            control?.clearValidators();
+            control?.reset(); // Clear values when disabled
+          });
+        }
+
+        controls.forEach((controlName) => {
+          insuranceGroup.get(controlName)?.updateValueAndValidity();
+        });
+      });
 
     // Add initial empty fields for better UX
     this.addEmergencyContact();

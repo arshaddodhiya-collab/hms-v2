@@ -524,93 +524,105 @@
     </p-panel>
 
     <!-- Insurance Info -->
-    <p-panel header="Insurance Info" [toggleable]="true">
-      <div formGroupName="insuranceInfo" class="formgrid grid">
-        <div class="field col-12 md:col-6">
-          <label for="providerName" class="font-medium">Provider Name</label>
-          <input
-            pInputText
-            id="providerName"
-            formControlName="providerName"
-            class="w-full"
-            [pKeyFilter]="nameRegex"
-          />
-          @if (
-            patientForm.get("insuranceInfo.providerName")?.invalid &&
-            patientForm.get("insuranceInfo.providerName")?.touched
-          ) {
-            <small class="p-error block">Provider Name is required.</small>
-          }
+    <div class="flex align-items-center gap-2 mb-3">
+      <p-inputSwitch
+        formControlName="hasInsurance"
+        inputId="insuranceToggle"
+      ></p-inputSwitch>
+      <label for="insuranceToggle" class="font-bold cursor-pointer"
+        >Do you have insurance?</label
+      >
+    </div>
+
+    @if (patientForm.get("hasInsurance")?.value) {
+      <p-panel header="Insurance Info" [toggleable]="true" class="fade-in">
+        <div formGroupName="insuranceInfo" class="formgrid grid">
+          <div class="field col-12 md:col-6">
+            <label for="providerName" class="font-medium">Provider Name</label>
+            <input
+              pInputText
+              id="providerName"
+              formControlName="providerName"
+              class="w-full"
+              [pKeyFilter]="nameRegex"
+            />
+            @if (
+              patientForm.get("insuranceInfo.providerName")?.invalid &&
+              patientForm.get("insuranceInfo.providerName")?.touched
+            ) {
+              <small class="p-error block">Provider Name is required.</small>
+            }
+          </div>
+          <div class="field col-12 md:col-6">
+            <label for="policyNumber" class="font-medium">Policy Number</label>
+            <input
+              pInputText
+              id="policyNumber"
+              formControlName="policyNumber"
+              class="w-full"
+              pKeyFilter="alphanum"
+            />
+            @if (
+              patientForm.get("insuranceInfo.policyNumber")?.invalid &&
+              patientForm.get("insuranceInfo.policyNumber")?.touched
+            ) {
+              <small class="p-error block">Policy Number is required.</small>
+            }
+          </div>
+          <div class="field col-12">
+            <label for="coverageDetails" class="font-medium"
+              >Coverage Details</label
+            >
+            <textarea
+              pInputTextarea
+              id="coverageDetails"
+              formControlName="coverageDetails"
+              rows="3"
+              class="w-full"
+            ></textarea>
+            @if (
+              patientForm.get("insuranceInfo.coverageDetails")?.invalid &&
+              patientForm.get("insuranceInfo.coverageDetails")?.touched
+            ) {
+              <small class="p-error block">Coverage Details is required.</small>
+            }
+          </div>
+          <div class="field col-12 md:col-6">
+            <label for="expirationDate" class="font-medium"
+              >Expiration Date</label
+            >
+            <p-calendar
+              id="expirationDate"
+              formControlName="expirationDate"
+              [showIcon]="true"
+              dateFormat="yy-mm-dd"
+              styleClass="w-full"
+              inputStyleClass="w-full"
+            ></p-calendar>
+            @if (
+              patientForm.get("insuranceInfo.expirationDate")?.invalid &&
+              patientForm.get("insuranceInfo.expirationDate")?.touched
+            ) {
+              <small class="p-error block">
+                @if (
+                  patientForm
+                    .get("insuranceInfo.expirationDate")
+                    ?.hasError("required")
+                ) {
+                  Expiration Date is required.
+                } @else if (
+                  patientForm
+                    .get("insuranceInfo.expirationDate")
+                    ?.hasError("pastDate")
+                ) {
+                  Date must be in the future.
+                }
+              </small>
+            }
+          </div>
         </div>
-        <div class="field col-12 md:col-6">
-          <label for="policyNumber" class="font-medium">Policy Number</label>
-          <input
-            pInputText
-            id="policyNumber"
-            formControlName="policyNumber"
-            class="w-full"
-            pKeyFilter="alphanum"
-          />
-          @if (
-            patientForm.get("insuranceInfo.policyNumber")?.invalid &&
-            patientForm.get("insuranceInfo.policyNumber")?.touched
-          ) {
-            <small class="p-error block">Policy Number is required.</small>
-          }
-        </div>
-        <div class="field col-12">
-          <label for="coverageDetails" class="font-medium"
-            >Coverage Details</label
-          >
-          <textarea
-            pInputTextarea
-            id="coverageDetails"
-            formControlName="coverageDetails"
-            rows="3"
-            class="w-full"
-          ></textarea>
-          @if (
-            patientForm.get("insuranceInfo.coverageDetails")?.invalid &&
-            patientForm.get("insuranceInfo.coverageDetails")?.touched
-          ) {
-            <small class="p-error block">Coverage Details is required.</small>
-          }
-        </div>
-        <div class="field col-12 md:col-6">
-          <label for="expirationDate" class="font-medium"
-            >Expiration Date</label
-          >
-          <p-calendar
-            id="expirationDate"
-            formControlName="expirationDate"
-            [showIcon]="true"
-            dateFormat="yy-mm-dd"
-            styleClass="w-full"
-            inputStyleClass="w-full"
-          ></p-calendar>
-          @if (
-            patientForm.get("insuranceInfo.expirationDate")?.invalid &&
-            patientForm.get("insuranceInfo.expirationDate")?.touched
-          ) {
-            <small class="p-error block">
-              @if (
-                patientForm
-                  .get("insuranceInfo.expirationDate")
-                  ?.hasError("required")
-              ) {
-                Expiration Date is required.
-              } @else if (
-                patientForm
-                  .get("insuranceInfo.expirationDate")
-                  ?.hasError("pastDate")
-              ) {
-                Date must be in the future.
-              }
-            </small>
-          }
-        </div>
-      </div>
-    </p-panel>
+      </p-panel>
+    }
 
     <div class="flex justify-content-end">
       <p-button
@@ -764,32 +776,35 @@
       </div>
 
       <!-- Insurance Info -->
-      <div class="col-12 md:col-6">
-        <p-panel header="Insurance Info" styleClass="h-full">
-          <div class="flex flex-column gap-2">
-            <p>
-              <strong>Provider:</strong>
-              {{ submittedData.insuranceInfo.providerName }}
-            </p>
-            <p>
-              <strong>Policy #:</strong>
-              {{ submittedData.insuranceInfo.policyNumber }}
-            </p>
-            <p>
-              <strong>Expires:</strong>
-              {{
-                submittedData.insuranceInfo.expirationDate | date: "mediumDate"
-              }}
-            </p>
-            <div class="mt-2">
-              <strong>Coverage Details:</strong>
-              <p class="m-0 text-sm white-space-pre-wrap">
-                {{ submittedData.insuranceInfo.coverageDetails }}
+      @if (submittedData.hasInsurance) {
+        <div class="col-12 md:col-6">
+          <p-panel header="Insurance Info" styleClass="h-full">
+            <div class="flex flex-column gap-2">
+              <p>
+                <strong>Provider:</strong>
+                {{ submittedData.insuranceInfo.providerName }}
               </p>
+              <p>
+                <strong>Policy #:</strong>
+                {{ submittedData.insuranceInfo.policyNumber }}
+              </p>
+              <p>
+                <strong>Expires:</strong>
+                {{
+                  submittedData.insuranceInfo.expirationDate
+                    | date: "mediumDate"
+                }}
+              </p>
+              <div class="mt-2">
+                <strong>Coverage Details:</strong>
+                <p class="m-0 text-sm white-space-pre-wrap">
+                  {{ submittedData.insuranceInfo.coverageDetails }}
+                </p>
+              </div>
             </div>
-          </div>
-        </p-panel>
-      </div>
+          </p-panel>
+        </div>
+      }
     </div>
   </div>
 }
