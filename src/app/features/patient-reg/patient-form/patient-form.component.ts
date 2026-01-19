@@ -206,62 +206,50 @@ export class PatientFormComponent {
           this.patientForm.reset();
         });
     } else {
-      this.inputValidation.set(false); // Reset signal at start of validation
       this.markFormGroupDirty(this.patientForm, true);
     }
   }
 
   markFormGroupDirty(
-    control: import('@angular/forms').AbstractControl | null | undefined,
+    formGroup: FormGroup | null | undefined,
     scrollToInvalid?: boolean,
   ) {
-    if (!control) return;
+    if (!formGroup) return;
 
-    if (control instanceof FormControl) {
-      control.markAsDirty();
-      control.markAsTouched();
-      return;
-    }
+    this.inputValidation.set(false);
+    Object.keys(formGroup.controls).forEach((field) => {
+      const control = formGroup.get(field);
+      if (!control) return;
 
-    if (control instanceof FormGroup) {
-      Object.keys(control.controls).forEach((field) => {
-        const childControl = control.get(field);
-        if (!childControl) return;
-
-        if (childControl instanceof FormControl) {
-          childControl.markAsDirty();
-          childControl.markAsTouched();
-          if (
-            childControl.invalid &&
-            !this.inputValidation() &&
-            scrollToInvalid
-          ) {
-            const invalidControlElement = document.querySelector(
-              `[formcontrolname="${field}"]`,
-            );
-            if (invalidControlElement) {
-              invalidControlElement.scrollIntoView({
-                behavior: 'smooth',
-                block: 'center',
-              });
-              if (
-                invalidControlElement instanceof HTMLInputElement ||
-                invalidControlElement instanceof HTMLTextAreaElement
-              ) {
-                invalidControlElement.focus();
-              }
+      if (control instanceof FormControl) {
+        control.markAsDirty();
+        control.markAsTouched(); // Ensure touched state for template errors
+        if (control.invalid && !this.inputValidation() && scrollToInvalid) {
+          const invalidControlElement = document.querySelector(
+            `[formcontrolname="${field}"]`,
+          );
+          if (invalidControlElement) {
+            invalidControlElement.scrollIntoView({
+              behavior: 'smooth',
+              block: 'center',
+            });
+            // Focus if it's an input
+            if (
+              invalidControlElement instanceof HTMLInputElement ||
+              invalidControlElement instanceof HTMLTextAreaElement
+            ) {
+              invalidControlElement.focus();
             }
-            this.inputValidation.set(true);
           }
-        } else {
-          // Recursive call for nested Groups or Arrays
-          this.markFormGroupDirty(childControl, scrollToInvalid);
+          this.inputValidation.set(true);
         }
-      });
-    } else if (control instanceof FormArray) {
-      control.controls.forEach((subControl) =>
-        this.markFormGroupDirty(subControl, scrollToInvalid),
-      );
-    }
+      } else if (control instanceof FormGroup) {
+        this.markFormGroupDirty(control, scrollToInvalid);
+      } else if (control instanceof FormArray) {
+        control.controls.forEach((subFormGroup) =>
+          this.markFormGroupDirty(subFormGroup as FormGroup, scrollToInvalid),
+        );
+      }
+    });
   }
 }

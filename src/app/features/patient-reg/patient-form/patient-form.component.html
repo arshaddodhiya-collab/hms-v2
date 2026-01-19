@@ -14,7 +14,6 @@
             pInputText
             id="firstName"
             formControlName="firstName"
-            [attr.formcontrolname]="'firstName'"
             class="w-full"
           />
           @if (
@@ -44,7 +43,6 @@
             pInputText
             id="lastName"
             formControlName="lastName"
-            [attr.formcontrolname]="'lastName'"
             class="w-full"
           />
           @if (
@@ -73,7 +71,6 @@
           <p-calendar
             id="dateOfBirth"
             formControlName="dateOfBirth"
-            [attr.formcontrolname]="'dateOfBirth'"
             [showIcon]="true"
             dateFormat="yy-mm-dd"
             styleClass="w-full"
@@ -106,7 +103,6 @@
             id="gender"
             [options]="genderOptions"
             formControlName="gender"
-            [attr.formcontrolname]="'gender'"
             placeholder="Select Gender"
             styleClass="w-full"
           ></p-dropdown>
@@ -123,7 +119,6 @@
             id="nationality"
             [options]="nationalityOptions"
             formControlName="nationality"
-            [attr.formcontrolname]="'nationality'"
             placeholder="Select Nationality"
             [filter]="true"
             filterBy="label"
@@ -142,7 +137,6 @@
             id="maritalStatus"
             [options]="maritalStatusOptions"
             formControlName="maritalStatus"
-            [attr.formcontrolname]="'maritalStatus'"
             placeholder="Select Status"
             styleClass="w-full"
           ></p-dropdown>
@@ -161,13 +155,7 @@
       <div formGroupName="contactInfo" class="formgrid grid">
         <div class="field col-12 md:col-6">
           <label for="email" class="font-medium">Email</label>
-          <input
-            pInputText
-            id="email"
-            formControlName="email"
-            [attr.formcontrolname]="'email'"
-            class="w-full"
-          />
+          <input pInputText id="email" formControlName="email" class="w-full" />
           @if (
             patientForm.get("contactInfo.email")?.hasError("required") &&
             patientForm.get("contactInfo.email")?.touched
@@ -187,7 +175,6 @@
             pInputText
             id="phoneNumber"
             formControlName="phoneNumber"
-            [attr.formcontrolname]="'phoneNumber'"
             class="w-full"
           />
           @if (
@@ -218,7 +205,6 @@
               pInputText
               id="street"
               formControlName="street"
-              [attr.formcontrolname]="'street'"
               class="w-full"
             />
             @if (
@@ -230,13 +216,7 @@
           </div>
           <div class="field col-12 md:col-6">
             <label for="city" class="font-medium">City</label>
-            <input
-              pInputText
-              id="city"
-              formControlName="city"
-              [attr.formcontrolname]="'city'"
-              class="w-full"
-            />
+            <input pInputText id="city" formControlName="city" class="w-full" />
             @if (
               patientForm.get("contactInfo.address.city")?.invalid &&
               patientForm.get("contactInfo.address.city")?.touched
@@ -250,7 +230,6 @@
               pInputText
               id="state"
               formControlName="state"
-              [attr.formcontrolname]="'state'"
               class="w-full"
             />
             @if (
@@ -266,7 +245,6 @@
               pInputText
               id="postalCode"
               formControlName="postalCode"
-              [attr.formcontrolname]="'postalCode'"
               class="w-full"
             />
             @if (
@@ -296,7 +274,6 @@
               pInputText
               id="country"
               formControlName="country"
-              [attr.formcontrolname]="'country'"
               class="w-full"
             />
             @if (
@@ -321,7 +298,6 @@
             id="bloodGroup"
             [options]="bloodGroupOptions"
             formControlName="bloodGroup"
-            [attr.formcontrolname]="'bloodGroup'"
             placeholder="Select Blood Group"
             styleClass="w-full md:w-20rem"
           ></p-dropdown>
@@ -351,7 +327,6 @@
                 <input
                   pInputText
                   [formControlName]="i"
-                  [attr.formcontrolname]="i"
                   placeholder="Allergy Name"
                 />
                 <button
@@ -390,7 +365,6 @@
                 <input
                   pInputText
                   [formControlName]="i"
-                  [attr.formcontrolname]="i"
                   placeholder="Medication Name"
                 />
                 <button
@@ -431,7 +405,6 @@
                 <input
                   pInputText
                   [formControlName]="i"
-                  [attr.formcontrolname]="i"
                   placeholder="Surgery Details"
                 />
                 <button
@@ -477,12 +450,7 @@
             <div class="formgrid grid">
               <div class="field col-12 md:col-4">
                 <label class="font-medium">Name</label>
-                <input
-                  pInputText
-                  formControlName="name"
-                  [attr.formcontrolname]="'name'"
-                  class="w-full"
-                />
+                <input pInputText formControlName="name" class="w-full" />
                 @if (
                   contact.get("name")?.invalid && contact.get("name")?.touched
                 ) {
@@ -500,7 +468,6 @@
                 <input
                   pInputText
                   formControlName="relationship"
-                  [attr.formcontrolname]="'relationship'"
                   class="w-full"
                 />
                 @if (
@@ -515,7 +482,6 @@
                 <input
                   pInputText
                   formControlName="phoneNumber"
-                  [attr.formcontrolname]="'phoneNumber'"
                   class="w-full"
                 />
                 @if (
@@ -548,7 +514,6 @@
             pInputText
             id="providerName"
             formControlName="providerName"
-            [attr.formcontrolname]="'providerName'"
             class="w-full"
           />
           @if (
@@ -564,7 +529,6 @@
             pInputText
             id="policyNumber"
             formControlName="policyNumber"
-            [attr.formcontrolname]="'policyNumber'"
             class="w-full"
           />
           @if (
@@ -582,7 +546,6 @@
             pInputTextarea
             id="coverageDetails"
             formControlName="coverageDetails"
-            [attr.formcontrolname]="'coverageDetails'"
             rows="3"
             class="w-full"
           ></textarea>
@@ -600,7 +563,6 @@
           <p-calendar
             id="expirationDate"
             formControlName="expirationDate"
-            [attr.formcontrolname]="'expirationDate'"
             [showIcon]="true"
             dateFormat="yy-mm-dd"
             styleClass="w-full"
