@@ -19,6 +19,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PanelModule } from 'primeng/panel';
 import { RippleModule } from 'primeng/ripple';
+import { ChipModule } from 'primeng/chip';
 
 @Component({
   selector: 'app-patient-form',
@@ -33,6 +34,7 @@ import { RippleModule } from 'primeng/ripple';
     InputTextareaModule,
     PanelModule,
     RippleModule,
+    ChipModule,
   ],
   templateUrl: './patient-form.component.html',
   styleUrl: './patient-form.component.scss',
@@ -196,14 +198,26 @@ export class PatientFormComponent {
     this.emergencyContacts.removeAt(index);
   }
 
+  submittedData: any = null;
+
   onSubmit() {
     if (this.patientForm.valid) {
+      this.submittedData = this.patientForm.value;
       this.patientService
         .submitRegistration(this.patientForm.value)
         .subscribe((response) => {
           console.log(response);
-          alert('Patient Registered Successfully!');
+          this.inputValidation.set(false);
+          // Optional: Delay reset or keep form populated? User requirement implies showing data "below", usually means "result".
+          // I will reset the form but keep the submittedData for display.
           this.patientForm.reset();
+          // Scroll to bottom to show the data
+          setTimeout(() => {
+            document
+              .querySelector('#submittedDataView')
+              ?.scrollIntoView({ behavior: 'smooth' });
+          }, 100);
+          alert('Patient Registered Successfully!');
         });
     } else {
       this.markFormGroupDirty(this.patientForm, true);

@@ -602,3 +602,174 @@
     </div>
   </form>
 </div>
+
+@if (submittedData) {
+  <div id="submittedDataView" class="card p-4 mt-4 slide-in-bottom">
+    <h2 class="text-3xl font-bold mb-4 text-primary">
+      Submitted Registration Details
+    </h2>
+
+    <div class="grid">
+      <!-- Personal Details -->
+      <div class="col-12 md:col-6">
+        <p-panel header="Personal Details" styleClass="h-full">
+          <div class="flex flex-column gap-2">
+            <p>
+              <strong>Name:</strong>
+              {{ submittedData.personalDetails.firstName }}
+              {{ submittedData.personalDetails.lastName }}
+            </p>
+            <p>
+              <strong>DOB:</strong>
+              {{
+                submittedData.personalDetails.dateOfBirth | date: "mediumDate"
+              }}
+            </p>
+            <p>
+              <strong>Gender:</strong>
+              {{ submittedData.personalDetails.gender }}
+            </p>
+            <p>
+              <strong>Nationality:</strong>
+              {{ submittedData.personalDetails.nationality }}
+            </p>
+            <p>
+              <strong>Marital Status:</strong>
+              {{ submittedData.personalDetails.maritalStatus }}
+            </p>
+          </div>
+        </p-panel>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-12 md:col-6">
+        <p-panel header="Contact Info" styleClass="h-full">
+          <div class="flex flex-column gap-2">
+            <p><strong>Email:</strong> {{ submittedData.contactInfo.email }}</p>
+            <p>
+              <strong>Phone:</strong>
+              {{ submittedData.contactInfo.phoneNumber }}
+            </p>
+            <div class="mt-2">
+              <strong>Address:</strong>
+              <p class="m-0">{{ submittedData.contactInfo.address.street }}</p>
+              <p class="m-0">
+                {{ submittedData.contactInfo.address.city }},
+                {{ submittedData.contactInfo.address.state }}
+                {{ submittedData.contactInfo.address.postalCode }}
+              </p>
+              <p class="m-0">{{ submittedData.contactInfo.address.country }}</p>
+            </div>
+          </div>
+        </p-panel>
+      </div>
+
+      <!-- Medical Info -->
+      <div class="col-12">
+        <p-panel header="Medical Info">
+          <div class="grid">
+            <div class="col-12 md:col-4">
+              <p class="text-xl">
+                <strong>Blood Group:</strong>
+                {{ submittedData.medicalInfo.bloodGroup }}
+              </p>
+            </div>
+
+            <div class="col-12 md:col-4">
+              <strong>Allergies:</strong>
+              <div class="flex flex-wrap gap-2 mt-2">
+                @for (
+                  allergy of submittedData.medicalInfo.allergies;
+                  track $index
+                ) {
+                  <p-chip
+                    [label]="allergy"
+                    icon="pi pi-exclamation-circle"
+                  ></p-chip>
+                } @empty {
+                  <span class="text-500 font-italic">None</span>
+                }
+              </div>
+            </div>
+
+            <div class="col-12 md:col-4">
+              <strong>Current Medications:</strong>
+              <div class="flex flex-wrap gap-2 mt-2">
+                @for (
+                  med of submittedData.medicalInfo.currentMedications;
+                  track $index
+                ) {
+                  <p-chip [label]="med" icon="pi pi-briefcase"></p-chip>
+                } @empty {
+                  <span class="text-500 font-italic">None</span>
+                }
+              </div>
+            </div>
+
+            <div class="col-12 mt-3">
+              <strong>Past Surgeries:</strong>
+              <div class="flex flex-wrap gap-2 mt-2">
+                @for (
+                  surgery of submittedData.medicalInfo.pastSurgeries;
+                  track $index
+                ) {
+                  <p-chip [label]="surgery" icon="pi pi-heart"></p-chip>
+                } @empty {
+                  <span class="text-500 font-italic">None</span>
+                }
+              </div>
+            </div>
+          </div>
+        </p-panel>
+      </div>
+
+      <!-- Emergency Contacts -->
+      <div class="col-12 md:col-6">
+        <p-panel header="Emergency Contacts" styleClass="h-full">
+          <div class="flex flex-column gap-3">
+            @for (contact of submittedData.emergencyContacts; track $index) {
+              <div class="surface-ground p-3 border-round">
+                <p class="m-0 font-bold">
+                  {{ contact.name }} ({{ contact.relationship }})
+                </p>
+                <p class="m-0 text-sm">
+                  <i class="pi pi-phone mr-1"></i>{{ contact.phoneNumber }}
+                </p>
+              </div>
+            } @empty {
+              <span class="text-500 font-italic">None</span>
+            }
+          </div>
+        </p-panel>
+      </div>
+
+      <!-- Insurance Info -->
+      <div class="col-12 md:col-6">
+        <p-panel header="Insurance Info" styleClass="h-full">
+          <div class="flex flex-column gap-2">
+            <p>
+              <strong>Provider:</strong>
+              {{ submittedData.insuranceInfo.providerName }}
+            </p>
+            <p>
+              <strong>Policy #:</strong>
+              {{ submittedData.insuranceInfo.policyNumber }}
+            </p>
+            <p>
+              <strong>Expires:</strong>
+              {{
+                submittedData.insuranceInfo.expirationDate | date: "mediumDate"
+              }}
+            </p>
+            <div class="mt-2">
+              <strong>Coverage Details:</strong>
+              <p class="m-0 text-sm white-space-pre-wrap">
+                {{ submittedData.insuranceInfo.coverageDetails }}
+              </p>
+            </div>
+          </div>
+        </p-panel>
+      </div>
+    </div>
+  </div>
+}
