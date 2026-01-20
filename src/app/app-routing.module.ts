@@ -4,11 +4,16 @@ import { AuthGuard } from './core/guards/auth.guard';
 import { MainLayoutComponent } from './core/components/main-layout/main-layout.component';
 
 import { ForbiddenComponent } from './core/components/forbidden/forbidden.component';
+import { NotFoundComponent } from './core/components/not-found/not-found.component';
 
 const routes: Routes = [
   {
-    path: '403',
+    path: 'unauthorized',
     component: ForbiddenComponent,
+  },
+  {
+    path: 'notfound',
+    component: NotFoundComponent,
   },
   {
     path: 'login',

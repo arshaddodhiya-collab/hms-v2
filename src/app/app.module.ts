@@ -12,6 +12,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 
 import { ForbiddenComponent } from './core/components/forbidden/forbidden.component';
+import { NotFoundComponent } from './core/components/not-found/not-found.component';
 
 @NgModule({
   declarations: [AppComponent, MainLayoutComponent, ForbiddenComponent],
@@ -22,6 +23,7 @@ import { ForbiddenComponent } from './core/components/forbidden/forbidden.compon
     HttpClientModule,
     ButtonModule,
     RippleModule,
+    NotFoundComponent,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true },
