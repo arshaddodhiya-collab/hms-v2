@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 
 export interface User {
   username: string;
-  role: string;
+  role: 'DOCTOR' | 'ADMIN' | 'PATIENT';
   token?: string;
 }
 
@@ -15,6 +15,12 @@ export interface User {
 export class AuthService {
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
+
+  private readonly MOCK_USERS: Record<string, User & { password: string }> = {
+    doctor: { username: 'doctor', password: 'test', role: 'DOCTOR' },
+    admin: { username: 'admin', password: 'admin', role: 'ADMIN' },
+    patient: { username: 'patient', password: 'patient', role: 'PATIENT' },
+  };
 
   constructor(private router: Router) {
     const token = localStorage.getItem('access_token');
@@ -37,22 +43,18 @@ export class AuthService {
   }
 
   login(username: string, password: string): Observable<boolean> {
-    // Mock validation
-    // Username: doctor
-    // Password: test
-    if (username === 'doctor' && password === 'test') {
-      const mockUser: User = {
-        username: 'doctor',
-        role: 'DOCTOR',
-      };
+    const user = this.MOCK_USERS[username];
 
-      const token = this.generateMockJwt(mockUser);
+    if (user && user.password === password) {
+      // Create a user object without password for the state/token
+      const { password: _, ...userInfo } = user;
+      const token = this.generateMockJwt(userInfo);
 
       return of(true).pipe(
-        delay(500), // Simulate network latency
+        delay(500),
         tap(() => {
           localStorage.setItem('access_token', token);
-          this.currentUserSubject.next({ ...mockUser, token });
+          this.currentUserSubject.next({ ...userInfo, token });
         }),
       );
     }
@@ -66,12 +68,27 @@ export class AuthService {
   }
 
   isAuthenticated(): boolean {
-    return !!this.token; // Check existence of token
+    return !!this.token;
   }
 
   hasRole(role: string): boolean {
     const user = this.currentUserSubject.value;
     return user ? user.role === role : false;
+  }
+
+  // Helper to determine where to redirect after login based on role
+  getRedirectUrl(): string {
+    const role = this.currentUserValue?.role;
+    switch (role) {
+      case 'ADMIN':
+        return '/admin-dashboard';
+      case 'PATIENT':
+        return '/patient-dashboard';
+      case 'DOCTOR':
+        return '/discharge-summary';
+      default:
+        return '/';
+    }
   }
 
   private generateMockJwt(user: User): string {
@@ -83,7 +100,7 @@ export class AuthService {
         exp: Math.floor(Date.now() / 1000) + 60 * 60, // 1 hour expiration
       }),
     );
-    const signature = 'mockSignature'; // In real app, this is signed by server secret
+    const signature = 'mockSignature';
     return `${header}.${payload}.${signature}`;
   }
 
@@ -93,7 +110,6 @@ export class AuthService {
       if (parts.length !== 3) return null;
 
       const payload = JSON.parse(atob(parts[1]));
-      // Check expiration
       const now = Math.floor(Date.now() / 1000);
       if (payload.exp && payload.exp < now) {
         return null;

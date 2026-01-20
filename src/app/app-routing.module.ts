@@ -31,9 +31,27 @@ const routes: Routes = [
           ),
       },
       {
+        path: 'admin-dashboard',
+        data: { role: 'ADMIN' },
+        loadChildren: () =>
+          import('./features/admin-dashboard/admin-dashboard.module').then(
+            (m) => m.AdminDashboardModule,
+          ),
+      },
+      {
+        path: 'patient-dashboard',
+        data: { role: 'PATIENT' },
+        loadChildren: () =>
+          import('./features/patient-dashboard/patient-dashboard.module').then(
+            (m) => m.PatientDashboardModule,
+          ),
+      },
+      {
         path: '',
         redirectTo: 'discharge-summary',
-        pathMatch: 'full',
+        pathMatch: 'full', // This should be handled by AuthGuard redirect actually, or removed?
+        // Defaulting to discharge-summary is fine for now, but better would be a "dashboard" resolver or simple redirects.
+        // For now leaving as is, since redirects are handled on login.
       },
     ],
   },

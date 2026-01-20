@@ -41,8 +41,7 @@ export class LoginComponent implements OnInit {
     });
 
     // get return url from route parameters or default to '/'
-    this.returnUrl =
-      this.route.snapshot.queryParams['returnUrl'] || '/discharge-summary';
+    this.returnUrl = this.route.snapshot.queryParams['returnUrl'];
   }
 
   // convenience getter for easy access to form fields
@@ -64,7 +63,17 @@ export class LoginComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: () => {
-          this.router.navigate([this.returnUrl]);
+          // If a specific returnUrl was requested (e.g. they tried to access a protected page), go there.
+          // Otherwise, go to their role-specific dashboard.
+          if (
+            this.returnUrl &&
+            this.returnUrl !== '/' &&
+            this.returnUrl !== '/login'
+          ) {
+            this.router.navigate([this.returnUrl]);
+          } else {
+            this.router.navigate([this.authService.getRedirectUrl()]);
+          }
         },
         error: (error) => {
           this.error = error;
