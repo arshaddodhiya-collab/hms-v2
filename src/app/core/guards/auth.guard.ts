@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {
   CanActivate,
+  CanActivateChild,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
   UrlTree,
@@ -12,7 +13,7 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root',
 })
-export class AuthGuard implements CanActivate {
+export class AuthGuard implements CanActivate, CanActivateChild {
   constructor(
     private authService: AuthService,
     private router: Router,
@@ -26,11 +27,29 @@ export class AuthGuard implements CanActivate {
     | Promise<boolean | UrlTree>
     | boolean
     | UrlTree {
+    return this.checkAuth(route, state);
+  }
+
+  canActivateChild(
+    childRoute: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot,
+  ):
+    | Observable<boolean | UrlTree>
+    | Promise<boolean | UrlTree>
+    | boolean
+    | UrlTree {
+    return this.checkAuth(childRoute, state);
+  }
+
+  private checkAuth(
+    route: ActivatedRouteSnapshot,
+    state: RouterStateSnapshot,
+  ): boolean | UrlTree {
     if (this.authService.isAuthenticated()) {
       const requiredRole = route.data['role'];
       if (requiredRole && !this.authService.hasRole(requiredRole)) {
-        // Role not authorized, redirect to proper dashboard
-        this.router.navigate([this.authService.getRedirectUrl()]);
+        // Role not authorized, redirect to forbidden page
+        this.router.navigate(['/403']);
         return false;
       }
       return true;

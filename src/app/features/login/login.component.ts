@@ -30,7 +30,7 @@ export class LoginComponent implements OnInit {
   ) {
     // redirect to home if already logged in
     if (this.authService.isAuthenticated()) {
-      this.router.navigate(['/discharge-summary']);
+      this.router.navigate([this.authService.getRedirectUrl()]);
     }
   }
 
@@ -75,7 +75,7 @@ export class LoginComponent implements OnInit {
             this.router.navigate([this.authService.getRedirectUrl()]);
           }
         },
-        error: (error) => {
+        error: (error: any) => {
           this.error = error;
           this.loading = false;
         },

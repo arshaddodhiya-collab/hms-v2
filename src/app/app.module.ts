@@ -11,8 +11,10 @@ import { MainLayoutComponent } from './core/components/main-layout/main-layout.c
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { JwtInterceptor } from './core/interceptors/jwt.interceptor';
 
+import { ForbiddenComponent } from './core/components/forbidden/forbidden.component';
+
 @NgModule({
-  declarations: [AppComponent, MainLayoutComponent],
+  declarations: [AppComponent, MainLayoutComponent, ForbiddenComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,

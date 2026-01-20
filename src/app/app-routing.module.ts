@@ -3,7 +3,13 @@ import { RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './core/guards/auth.guard';
 import { MainLayoutComponent } from './core/components/main-layout/main-layout.component';
 
+import { ForbiddenComponent } from './core/components/forbidden/forbidden.component';
+
 const routes: Routes = [
+  {
+    path: '403',
+    component: ForbiddenComponent,
+  },
   {
     path: 'login',
     loadChildren: () =>
@@ -13,6 +19,7 @@ const routes: Routes = [
     path: '',
     component: MainLayoutComponent,
     canActivate: [AuthGuard],
+    canActivateChild: [AuthGuard],
     children: [
       {
         path: 'discharge-summary',
