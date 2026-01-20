@@ -1,30 +1,45 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './core/guards/auth.guard';
+import { MainLayoutComponent } from './core/components/main-layout/main-layout.component';
 
 const routes: Routes = [
   {
-    path: 'discharge-summary',
+    path: 'login',
     loadChildren: () =>
-      import('./features/discharge-summary/discharge-summary.module').then(
-        (m) => m.DischargeSummaryModule,
-      ),
+      import('./features/login/login.module').then((m) => m.LoginModule),
   },
   {
     path: '',
-    redirectTo: 'discharge-summary',
-    pathMatch: 'full',
+    component: MainLayoutComponent,
+    canActivate: [AuthGuard],
+    children: [
+      {
+        path: 'discharge-summary',
+        data: { role: 'DOCTOR' },
+        loadChildren: () =>
+          import('./features/discharge-summary/discharge-summary.module').then(
+            (m) => m.DischargeSummaryModule,
+          ),
+      },
+      {
+        path: 'patient-reg',
+        data: { role: 'DOCTOR' },
+        loadChildren: () =>
+          import('./features/patient-reg/patient-reg.module').then(
+            (m) => m.PatientRegModule,
+          ),
+      },
+      {
+        path: '',
+        redirectTo: 'discharge-summary',
+        pathMatch: 'full',
+      },
+    ],
   },
   {
-    path: 'patient-reg',
-    loadChildren: () =>
-      import('./features/patient-reg/patient-reg.module').then(
-        (m) => m.PatientRegModule,
-      ),
-  },
-  {
-    path: '',
-    redirectTo: 'patient-reg',
-    pathMatch: 'full',
+    path: '**',
+    redirectTo: 'login', // Catch all redirect to login
   },
 ];
 

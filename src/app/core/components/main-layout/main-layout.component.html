@@ -1,0 +1,117 @@
+<div class="layout-wrapper min-h-screen flex relative">
+  <!-- Sidebar -->
+  <div
+    class="layout-sidebar bg-white surface-border border-right-1 w-18rem fixed h-full z-1 transition-all transition-duration-300 flex-column"
+    [ngClass]="{
+      hidden: !mobileMenuActive,
+      flex: mobileMenuActive,
+      'md:flex': true,
+    }"
+  >
+    <div class="p-3 text-center border-bottom-1 surface-border bg-primary">
+      <h2 class="text-white text-xl m-0">MediApp</h2>
+    </div>
+
+    <div class="flex-auto overflow-y-auto">
+      <ul class="list-none p-0 m-0 p-3">
+        <li>
+          <a
+            routerLink="/discharge-summary"
+            routerLinkActive="surface-hover text-primary"
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full no-underline"
+          >
+            <i class="pi pi-file mr-2 text-xl"></i>
+            <span class="font-medium">Discharge Summary</span>
+          </a>
+        </li>
+        <li>
+          <a
+            routerLink="/patient-reg"
+            routerLinkActive="surface-hover text-primary"
+            pRipple
+            class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full no-underline"
+          >
+            <i class="pi pi-user-plus mr-2 text-xl"></i>
+            <span class="font-medium">Patient Reg</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <div class="mt-auto p-3 border-top-1 surface-border">
+      <a
+        (click)="logout()"
+        pRipple
+        class="flex align-items-center cursor-pointer p-3 border-round text-700 hover:surface-100 transition-duration-150 transition-colors w-full no-underline"
+      >
+        <i class="pi pi-sign-out mr-2 text-xl"></i>
+        <span class="font-medium">Logout</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="layout-main flex-column flex-auto md:ml-8">
+    <!-- Topbar for Mobile -->
+    <div
+      class="md:hidden flex justify-content-between align-items-center p-3 surface-card border-bottom-1 surface-border"
+    >
+      <button
+        pButton
+        icon="pi pi-bars"
+        class="p-button-text"
+        (click)="toggleMobileMenu()"
+      ></button>
+      <span class="font-bold text-xl">MediApp</span>
+      <button
+        pButton
+        icon="pi pi-sign-out"
+        class="p-button-text"
+        (click)="logout()"
+      ></button>
+    </div>
+
+    <div class="layout-content flex-auto p-4 md:pl-8 md:pt-4">
+      <div class="safe-area-fix" style="margin-left: 18rem">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Mask -->
+  <div
+    *ngIf="mobileMenuActive"
+    class="block md:hidden fixed top-0 left-0 w-full h-full bg-black-alpha-50 z-1"
+    (click)="toggleMobileMenu()"
+  ></div>
+</div>
+
+<style>
+  .w-18rem {
+    width: 18rem !important;
+  }
+  .layout-sidebar {
+    top: 0;
+    left: 0;
+    bottom: 0;
+  }
+  .md\:ml-8 {
+    margin-left: 0;
+  }
+
+  @media screen and (min-width: 768px) {
+    .layout-main .safe-area-fix {
+      margin-left: 0;
+    }
+    .layout-main {
+      margin-left: 18rem;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .layout-sidebar {
+      z-index: 999;
+    }
+  }
+</style>
